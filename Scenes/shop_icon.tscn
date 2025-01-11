@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://dosivpharpaa6"]
+
+[ext_resource type="Script" path="res://Scripts/ShopIcon.cs" id="1_78ucd"]
+[ext_resource type="Texture2D" uid="uid://bpua06y1mfa4g" path="res://Sprites/shop.png" id="1_p68ms"]
+
+[node name="ShopIcon" type="Control"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -608.0
+offset_bottom = -328.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_78ucd")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = -1
+offset_right = 16.0
+offset_bottom = 16.0
+texture_normal = ExtResource("1_p68ms")
+texture_pressed = ExtResource("1_p68ms")
+stretch_mode = 0

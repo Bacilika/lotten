@@ -1,0 +1,88 @@
+[gd_scene load_steps=11 format=3 uid="uid://bp1grla7p6ojr"]
+
+[ext_resource type="Script" path="res://Scripts/Shop.cs" id="1_4xyim"]
+[ext_resource type="Script" path="res://Scripts/PlantsTab.cs" id="1_vxf8p"]
+[ext_resource type="Script" path="res://Scripts/ExtrasTab.cs" id="2_13i8q"]
+[ext_resource type="Texture2D" uid="uid://4wlgl55jf0fh" path="res://Sprites/Plants.png" id="3_jl2ov"]
+[ext_resource type="Texture2D" uid="uid://c6v2jqec3pxhd" path="res://Sprites/dirticon.png" id="5_fhuj4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6ieba"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ouiq6"]
+texture = ExtResource("3_jl2ov")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:0/0/custom_data_0 = 10
+2:0/0/custom_data_1 = "Carrot"
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+2:1/0/custom_data_0 = 2
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+2:2/0/custom_data_0 = 5
+
+[sub_resource type="TileSet" id="TileSet_vym67"]
+custom_data_layer_0/name = "Price"
+custom_data_layer_0/type = 2
+custom_data_layer_1/name = "Name"
+custom_data_layer_1/type = 4
+sources/0 = SubResource("TileSetAtlasSource_ouiq6")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p3qno"]
+texture = ExtResource("5_fhuj4")
+0:0/0 = 0
+0:0/0/custom_data_0 = "Plot"
+
+[sub_resource type="TileSet" id="TileSet_pc3cx"]
+custom_data_layer_0/name = "Type"
+custom_data_layer_0/type = 4
+sources/0 = SubResource("TileSetAtlasSource_p3qno")
+
+[node name="Shop" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+script = ExtResource("1_4xyim")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -212.0
+offset_bottom = 359.0
+grow_horizontal = 0
+tab_alignment = 1
+current_tab = 0
+clip_tabs = false
+
+[node name="PlantsTab" type="ScrollContainer" parent="TabContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_6ieba")
+script = ExtResource("1_vxf8p")
+metadata/_tab_index = 0
+
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/PlantsTab"]
+layout_mode = 2
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/PlantsTab"]
+tile_set = SubResource("TileSet_vym67")
+
+[node name="ExtrasTab" type="ScrollContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("2_13i8q")
+metadata/_tab_index = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/ExtrasTab"]
+layout_mode = 2
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/ExtrasTab"]
+tile_set = SubResource("TileSet_pc3cx")
