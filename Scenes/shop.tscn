@@ -2,43 +2,65 @@
 
 [ext_resource type="Script" path="res://Scripts/Shop.cs" id="1_4xyim"]
 [ext_resource type="Script" path="res://Scripts/PlantsTab.cs" id="1_vxf8p"]
+[ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="2_2sdfi"]
 [ext_resource type="Script" path="res://Scripts/ExtrasTab.cs" id="2_13i8q"]
 [ext_resource type="Texture2D" uid="uid://4wlgl55jf0fh" path="res://Sprites/Plants.png" id="3_jl2ov"]
 [ext_resource type="Texture2D" uid="uid://c6v2jqec3pxhd" path="res://Sprites/dirticon.png" id="5_fhuj4"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6ieba"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ouiq6"]
 texture = ExtResource("3_jl2ov")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
-2:0/0/custom_data_0 = 10
-2:0/0/custom_data_1 = "Carrot"
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
-2:1/0/custom_data_0 = 2
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
-2:2/0/custom_data_0 = 5
+3:0/0 = 0
+3:1/0 = 0
+3:2/0 = 0
+4:0/0 = 0
+4:0/0/custom_data_0 = 1
+4:0/0/custom_data_1 = "Carrot"
+4:0/0/custom_data_2 = 2
+4:0/0/custom_data_3 = 3
+4:1/0 = 0
+4:1/0/custom_data_0 = 2
+4:1/0/custom_data_1 = "Cucumber"
+4:1/0/custom_data_2 = 3
+4:1/0/custom_data_3 = 3
+4:2/0 = 0
+4:2/0/custom_data_0 = 3
+4:2/0/custom_data_1 = "Tomato"
+4:2/0/custom_data_2 = 5
+4:2/0/custom_data_3 = 3
 
 [sub_resource type="TileSet" id="TileSet_vym67"]
 custom_data_layer_0/name = "Price"
 custom_data_layer_0/type = 2
 custom_data_layer_1/name = "Name"
 custom_data_layer_1/type = 4
+custom_data_layer_2/name = "SellPrice"
+custom_data_layer_2/type = 2
+custom_data_layer_3/name = "GrowthTime"
+custom_data_layer_3/type = 2
 sources/0 = SubResource("TileSetAtlasSource_ouiq6")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p3qno"]
 texture = ExtResource("5_fhuj4")
 0:0/0 = 0
 0:0/0/custom_data_0 = "Plot"
+0:0/0/custom_data_1 = 2
 
 [sub_resource type="TileSet" id="TileSet_pc3cx"]
 custom_data_layer_0/name = "Type"
 custom_data_layer_0/type = 4
+custom_data_layer_1/name = "Price"
+custom_data_layer_1/type = 2
+custom_data_layer_2/name = "SellPrice"
+custom_data_layer_2/type = 2
 sources/0 = SubResource("TileSetAtlasSource_p3qno")
 
 [node name="Shop" type="Control"]
@@ -56,33 +78,33 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -212.0
-offset_bottom = 359.0
+offset_left = -135.0
+offset_bottom = 328.0
 grow_horizontal = 0
+theme = ExtResource("2_2sdfi")
 tab_alignment = 1
 current_tab = 0
 clip_tabs = false
 
-[node name="PlantsTab" type="ScrollContainer" parent="TabContainer"]
+[node name="Plants" type="ScrollContainer" parent="TabContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_6ieba")
 script = ExtResource("1_vxf8p")
 metadata/_tab_index = 0
 
-[node name="BoxContainer" type="BoxContainer" parent="TabContainer/PlantsTab"]
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/Plants"]
 layout_mode = 2
 
-[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/PlantsTab"]
+[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Plants"]
 tile_set = SubResource("TileSet_vym67")
 
-[node name="ExtrasTab" type="ScrollContainer" parent="TabContainer"]
+[node name="Buildings" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("2_13i8q")
 metadata/_tab_index = 1
 
-[node name="BoxContainer" type="BoxContainer" parent="TabContainer/ExtrasTab"]
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/Buildings"]
 layout_mode = 2
 
-[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/ExtrasTab"]
+[node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Buildings"]
 tile_set = SubResource("TileSet_pc3cx")

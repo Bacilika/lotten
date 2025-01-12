@@ -1,16 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dn46dy8nmjovo"]
+[gd_scene load_steps=4 format=3 uid="uid://dn46dy8nmjovo"]
 
 [ext_resource type="Script" path="res://Scripts/Products/Building.cs" id="1_k8lhe"]
+[ext_resource type="Texture2D" uid="uid://c5agq0knawqyt" path="res://Sprites/waterdplot.png" id="2_u42r8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ux3gf"]
-size = Vector2(16, 16)
+[sub_resource type="CircleShape2D" id="CircleShape2D_ldfbd"]
+radius = 4.0
 
 [node name="Building" type="Area2D"]
 script = ExtResource("1_k8lhe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, 8)
-shape = SubResource("RectangleShape2D_ux3gf")
+shape = SubResource("CircleShape2D_ldfbd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(8, 8)
+
+[node name="water" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_u42r8")

@@ -18,6 +18,14 @@ public static class Constants
 	public const int TileSize = 16;
 
 }
+public static class CustomData
+{
+	public const string Price = "Price";
+	public const string Name = "Name";
+	public const string SellPrice = "SellPrice";
+	public const string GrowthTime = "GrowthTime";
+	
+} 
 
 public static class Inputs
 {

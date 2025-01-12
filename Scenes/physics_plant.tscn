@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqt525snehije"]
+
+[ext_resource type="Script" path="res://Scripts/PhysicsPlant.cs" id="1_hgyc4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nr4hp"]
+radius = 3.0
+
+[node name="PhysicsPlant" type="RigidBody2D"]
+script = ExtResource("1_hgyc4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nr4hp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

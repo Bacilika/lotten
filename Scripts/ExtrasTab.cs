@@ -36,6 +36,9 @@ public partial class ExtrasTab : AbstractShopIconContainer
 						break;
 					
 				}
+				building.ProductName = (string)tileData.GetCustomData("Type");
+				building.Cost = (int)tileData.GetCustomData("Price");
+				building.SellPrice = (int)tileData.GetCustomData(CustomData.SellPrice);
 
 				AddChild(building);
 				var img = atlasSource.Texture.GetImage().GetRegion(atlasSource.GetTileTextureRegion(atlasCoords));

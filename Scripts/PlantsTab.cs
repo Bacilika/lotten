@@ -23,12 +23,11 @@ public partial class PlantsTab : AbstractShopIconContainer
 				var tileData = atlasSource.GetTileData(atlasCoords, 0);
 				if (tileData is not null)
 				{
-					/*if ((bool)ileData.GetCustomData(Constants.NeedsWatering))
-					{
-						waterLevels.Add(x);
-					}*/
+					plant.ProductName = (string)tileData.GetCustomData(CustomData.Name);
+					plant.Cost = (int)tileData.GetCustomData(CustomData.Price);
+					plant.SellPrice = (int)tileData.GetCustomData(CustomData.SellPrice);
+					plant.GrowthTime = (int)tileData.GetCustomData(CustomData.GrowthTime);
 				}
-
 				var img = atlasSource.Texture.GetImage().GetRegion(atlasSource.GetTileTextureRegion(atlasCoords));
 
 				plant.Sprites.Add(ImageTexture.CreateFromImage(img));

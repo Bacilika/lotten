@@ -3,16 +3,16 @@
 [ext_resource type="Script" path="res://Scripts/Products/Plant.cs" id="1_5xskg"]
 [ext_resource type="Texture2D" uid="uid://bpua06y1mfa4g" path="res://Sprites/shop.png" id="2_p3m2f"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h1smi"]
-size = Vector2(16, 16)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k3lcn"]
+radius = 4.0
+height = 8.0
 
 [node name="Plant" type="Area2D"]
 script = ExtResource("1_5xskg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, 8)
-shape = SubResource("RectangleShape2D_h1smi")
+physics_interpolation_mode = 1
+shape = SubResource("CapsuleShape2D_k3lcn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(8, 8)
 texture = ExtResource("2_p3m2f")
