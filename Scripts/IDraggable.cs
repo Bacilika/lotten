@@ -14,4 +14,6 @@ public interface IDraggable
     Vector2 LerpedPosition { get; set; }
     Vector2 GlobalPosition { get; set; }
     
+    Vector2 PositionAtDragStart { get; set; }
+    
 }

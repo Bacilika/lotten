@@ -8,6 +8,7 @@ namespace Lotten.Scripts.Products;
 public partial class Plant : Product, IDraggable
 {
 	public List<Texture2D> Sprites = [];
+	
 	private GameScene _gameScene;
 	public Timer GrowthTimer;
 	public int GrowthTime = 5;
@@ -15,10 +16,10 @@ public partial class Plant : Product, IDraggable
 	public bool Draggable = false;
 	public bool Harvested = false;
 	public Plot Plot;
-
-
-
+	
 	public Vector2 LerpedPosition { get; set; }
+	public Vector2 PositionAtDragStart { get; set; }
+
 	public override void _Ready()
 	{
 		
@@ -53,36 +54,41 @@ public partial class Plant : Product, IDraggable
 
 	private void GrowthTimerOnTimeout()
 	{
+		
+		Plot.Dry();
 		GrowthStage++;
 		if (GrowthStage == Sprites.Count-2)
 		{
+			Plot.IsWatered = false;
 			Console.WriteLine("Plant fully grown");
 			Draggable = true;
-			//TODO: Remove plant from plot
-		}
-		else
-		{
-			GrowthTimer.Start();
+			PlantSprite.Texture = Sprites[GrowthStage];
+			return;
 		}
 		PlantSprite.Texture = Sprites[GrowthStage];
-		
-		
+		GrowthTimer.Start();
+	}
+	public void StartGrowTimer()
+	{
+		if( !Draggable && GrowthTimer.IsStopped())
+			GrowthTimer.Start();
 	}
 
 	public void OnPlanted()
 	{
 		_gameScene = GetParent<GameScene>();
 		PlantSprite.Texture = Sprites[1];
+		GrowthStage = 1;
 		GrowthTimer.WaitTime = GrowthTime;
 		GrowthTimer.Timeout += GrowthTimerOnTimeout;
-		GrowthTimer.Start();
+		if(Plot.IsWatered)
+			GrowthTimer.Start();
 	}
 
 	public void OnMouseEntered()
 	{
 		if (Draggable && !_gameScene.Dragging)
 		{
-			
 			_gameScene.FocusedDraggable = this;
 		}
 	}
@@ -98,6 +104,7 @@ public partial class Plant : Product, IDraggable
 		{
 			Harvest();
 		}
+
 	}
 	public void OnDropped()
 	{

@@ -12,20 +12,25 @@ public partial class Plot : Building
     
     public override void OnBodyEntered(Node2D body)
     {
-        if (body is Water water)
+        if (body is Water water && !IsWatered)
         {
             IsWatered = true;
             Console.WriteLine("Plot is watered");
             _gameScene.RemoveChild(water);
             BuildingScene.GetNode<Sprite2D>("water").Visible = true;
             water.QueueFree();
+            _plant?.StartGrowTimer();
             
         }
     }
 
     public override void OnBodyExited(Node2D body)
     {
+    }
 
+    public void Dry()
+    {
+        BuildingScene.GetNode<Sprite2D>("water").Visible = false;
     }
 
 

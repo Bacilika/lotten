@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqt525snehije"]
+[gd_scene load_steps=4 format=3 uid="uid://dqt525snehije"]
 
 [ext_resource type="Script" path="res://Scripts/PhysicsPlant.cs" id="1_hgyc4"]
+[ext_resource type="Texture2D" uid="uid://cy00snhhnfhb7" path="res://Tilemaps/watershadow.png" id="2_eriv8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nr4hp"]
 radius = 3.0
 
 [node name="PhysicsPlant" type="RigidBody2D"]
+linear_damp = 30.0
 script = ExtResource("1_hgyc4")
+
+[node name="shadow" type="Sprite2D" parent="."]
+texture = ExtResource("2_eriv8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_nr4hp")

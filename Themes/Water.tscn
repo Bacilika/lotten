@@ -1,14 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://b88tbsugpwm12"]
+[gd_scene load_steps=5 format=3 uid="uid://b88tbsugpwm12"]
 
 [ext_resource type="Texture2D" uid="uid://dx46te2qjliwt" path="res://Sprites/water.png" id="1_8kkga"]
 [ext_resource type="Script" path="res://Scripts/Water.cs" id="1_kbe84"]
+[ext_resource type="Texture2D" uid="uid://cy00snhhnfhb7" path="res://Tilemaps/watershadow.png" id="2_fklya"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_87odc"]
 radius = 3.0
 
 [node name="Water" type="RigidBody2D"]
 top_level = true
+collision_layer = 3
+linear_damp = 30.0
 script = ExtResource("1_kbe84")
+
+[node name="shadow" type="Sprite2D" parent="."]
+texture = ExtResource("2_fklya")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 physics_interpolation_mode = 1

@@ -14,6 +14,18 @@ public partial class UI : CanvasLayer
 	
 	private GameScene _gameScene;
 	private Product _activeProduct;
+	private RichTextLabel _moneyLabel;
+	private int _money;
+	public int Money
+	{
+		get=>_money;
+		set
+		{
+			_money = value;
+			_moneyLabel.Text = $" [img]res://Sprites/coin.png[/img]x{_money}";
+		}
+	}
+
 	public Product ActiveProduct
 	{
 		get => _activeProduct;
@@ -37,10 +49,13 @@ public partial class UI : CanvasLayer
 		shop = GetNode<Shop>("Shop");
 		shop.OnShopButtonPressed += OnShopButtonPressed;
 		_gameScene = GetParent<GameScene>();
+		_moneyLabel = GetNode<RichTextLabel>("MoneyLabel");
+		Money = 10;
 	}
 
 	public override void _Process(double delta)
 	{
+		
 		if(ActiveProduct != null)
 		{
 			var deltaFloat = (float)delta;
@@ -53,6 +68,7 @@ public partial class UI : CanvasLayer
 
 	public void OnPlaceProduct(Product product)
 	{
+		if(!_gameScene.MouseInBounds) return;
 		switch (product)
 		{
 			case Building building:
@@ -62,6 +78,7 @@ public partial class UI : CanvasLayer
 					newBuilding.CopyValuesFrom(building);
 					EmitSignal(newBuilding.BuildingInstance is Plot ? SignalName.OnPlacePlot : SignalName.OnPlaceBuilding,
 						newBuilding);
+					Money-= newBuilding.Cost;
 				}
 				break;
 			case Plant plant:
@@ -70,18 +87,23 @@ public partial class UI : CanvasLayer
 				{
 					newPlant.CopyValuesFrom(plant);
 					EmitSignal(SignalName.OnPlacePlant, newPlant);
-					
+					Money-= plant.Cost;
 				}
 				break; 
 		}
 	}
+	public bool CanAfford(Product product)
+	{
+		return Money >= product.Cost;
+	}
 
 	public bool CanPlaceBuilding(Building building)
 	{
-		return !_gameScene.BuildingsOnGrid.ContainsKey(building.GridPosition);
+		return CanAfford(building) && !_gameScene.BuildingsOnGrid.ContainsKey(building.GridPosition);
 	}
 	public bool CanPlacePlant(Plant plant)
 	{
+		if (!CanAfford(plant)) return false;
 		if(_gameScene.BuildingsOnGrid.TryGetValue(plant.GridPosition, out var building))
 		{
 			return building is Plot { Plant: null };
