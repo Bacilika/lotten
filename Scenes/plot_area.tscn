@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6kltkj1wh0od"]
+
+[ext_resource type="Texture2D" uid="uid://do2egjmlemkqd" path="res://Sprites/expand2.png" id="1_1anga"]
+[ext_resource type="Texture2D" uid="uid://cag8srgyaurv" path="res://Sprites/expand4.png" id="2_wuy7x"]
+[ext_resource type="Texture2D" uid="uid://bkou7at2r8wry" path="res://Sprites/expand3.png" id="3_5kbgm"]
+[ext_resource type="Texture2D" uid="uid://bw7folkc6qhmq" path="res://Sprites/expand1.png" id="4_u7psf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kdwif"]
+size = Vector2(80, 80)
+
+[node name="PlotArea" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_kdwif")
+
+[node name="ExpandRight" type="TextureButton" parent="."]
+visible = false
+offset_left = 42.0
+offset_top = -7.0
+offset_right = 52.0
+offset_bottom = 7.0
+texture_normal = ExtResource("1_1anga")
+ignore_texture_size = true
+
+[node name="ExpandLeft" type="TextureButton" parent="."]
+visible = false
+offset_left = -51.0
+offset_top = -7.0
+offset_right = -42.0
+offset_bottom = 7.0
+texture_normal = ExtResource("2_wuy7x")
+ignore_texture_size = true
+
+[node name="ExpandDown" type="TextureButton" parent="."]
+visible = false
+offset_left = -7.0
+offset_top = 42.0
+offset_right = 7.0
+offset_bottom = 56.0
+texture_normal = ExtResource("3_5kbgm")
+
+[node name="ExpandUp" type="TextureButton" parent="."]
+visible = false
+offset_left = -7.0
+offset_top = -51.0
+offset_right = 7.0
+offset_bottom = -42.0
+texture_normal = ExtResource("4_u7psf")
+ignore_texture_size = true
