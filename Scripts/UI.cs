@@ -31,13 +31,14 @@ public partial class UI : CanvasLayer
 		get => _activeProduct;
 		set
 		{
-			if (value is null)
+			if(value == _activeProduct) return;
+			if (value is null || _activeProduct is not null)
 			{
 				_gameScene.RemoveChild(_activeProduct);
-				
 			}
-			else
+			if(value is not null)
 			{
+				value.GlobalPosition = _gameScene.GetGlobalMousePosition();
 				_gameScene.AddChild(value);
 			}
 			_activeProduct = value;
@@ -50,7 +51,7 @@ public partial class UI : CanvasLayer
 		shop.OnShopButtonPressed += OnShopButtonPressed;
 		_gameScene = GetParent<GameScene>();
 		_moneyLabel = GetNode<RichTextLabel>("MoneyLabel");
-		Money = 10;
+		Money = 1000;
 	}
 
 	public override void _Process(double delta)
@@ -68,11 +69,14 @@ public partial class UI : CanvasLayer
 
 	public void OnPlaceProduct(Product product)
 	{
-		if(!_gameScene.MouseInBounds) return;
+		if(_gameScene.GetPlotAreaAt(_gameScene.GetGlobalMousePosition()) == null) return;
 		switch (product)
 		{
 			case Building building:
-				if(!CanPlaceBuilding(building)) return;
+				if (!CanPlaceBuilding(building))
+				{
+					return;
+				}
 				if (building.Duplicate() is Building newBuilding)
 				{
 					newBuilding.CopyValuesFrom(building);
@@ -111,27 +115,30 @@ public partial class UI : CanvasLayer
 		return false;
 	}
 
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
 		if (ActiveProduct == null) return;
 		
 		if(@event.IsActionPressed(Inputs.LeftClick))
 		{
 			OnPlaceProduct(ActiveProduct);
+			_gameScene.Dragging = true;
 
 		}
 		else if(@event.IsActionPressed(Inputs.RightClick))
 		{
 			ActiveProduct = null;
 		}
+		else if(@event.IsActionReleased(Inputs.LeftClick))
+		{
+			OnPlaceProduct(ActiveProduct);
+			_gameScene.Dragging = false;
+		}
 	}
 
 
 	public void OnShopButtonPressed(Product product)
 	{
-		Console.WriteLine("UI received signal");
-		
 		ActiveProduct = product;
-		
 	}
 }

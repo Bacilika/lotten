@@ -9,10 +9,13 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 	private Vector2 _shadowLerpedPosition;
 	public Sprite2D Shadow;
 	public Vector2I GridPosition;
+	private PlotArea _lastPlotArea;
+	private bool _inAir;
 	public void OnDropped()
 	{
 		ApplyForce(Vector2.Down * 10000);
 		_shadowLerpedPosition = Vector2.Zero;
+		_inAir = false;
 	}
 
 	public Vector2 LerpedPosition { get; set; }
@@ -26,12 +29,21 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 		InputPickable = true;
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
-		
+		_lastPlotArea = _gameScene.GetPlotAreaAt(GlobalPosition);
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		MoveAndCollide(new Vector2(0, 0));
+		if (_gameScene.GetPlotAreaAt(GlobalPosition) != null)
+		{
+			_lastPlotArea = _gameScene.GetPlotAreaAt(GlobalPosition);
+		}
+		else
+		{
+			if(!_inAir && _lastPlotArea != null)
+				ApplyForce((_lastPlotArea.GlobalPosition - GlobalPosition)*30);
+		}
 	}
 
 	public override void _Process(double delta)
@@ -59,7 +71,6 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 		PositionAtDragStart = GlobalPosition;
 		SetCollisionLayer(1);
 		_shadowLerpedPosition = Vector2.Down * 5;
+		_inAir = true;
 	}
-
-
 }

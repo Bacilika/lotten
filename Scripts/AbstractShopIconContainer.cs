@@ -45,7 +45,11 @@ public abstract partial class AbstractShopIconContainer : ScrollContainer
    
 	public override void _ExitTree()
 	{
-		foreach (var product in Products) product.QueueFree();
+		foreach (var product in Products)
+		{
+			//product.OnExitTree();
+			product.QueueFree();
+		}
 		foreach (var icon in Stock) icon.QueueFree();
 	}
 	

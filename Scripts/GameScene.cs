@@ -6,7 +6,7 @@ using Lotten.Scripts.Products;
 namespace Lotten.Scripts;
 public partial class GameScene : Node2D
 {
-	private UI UI;
+	private UI _userInterface;
 	public TileMapLayer GrassLayer;
 	public TileMapLayer PlotLayer;
 	public Array<Vector2I> PlotTiles = [];
@@ -14,9 +14,10 @@ public partial class GameScene : Node2D
 	public System.Collections.Generic.Dictionary<Vector2I,Building> BuildingsOnGrid  = new();
 	public IDraggable FocusedDraggable;
 	public bool Dragging;
-	public bool MouseInBounds;
+	public Timer WaterTimer;
+	public RandomNumberGenerator RandomNumberGenerator = new ();
 	
-	public List<Area2D> ExpandedAreas = [];
+	public List<PlotArea> ExpandedAreas = [];
 
 	public override void _Ready()
 	{
@@ -24,16 +25,42 @@ public partial class GameScene : Node2D
 		window.Mode = Window.ModeEnum.Windowed;
 		window.Size = new Vector2I(1280, 720);
 		window.MoveToCenter();
-		UI = GetNode<UI>("UI");
-		UI.OnPlaceBuilding += OnPlaceBuilding;
-		UI.OnPlacePlot += OnPlacePlot;
-		UI.OnPlacePlant += OnPlacePlant;
+		_userInterface = GetNode<UI>("UI");
+		_userInterface.OnPlaceBuilding += OnPlaceBuilding;
+		_userInterface.OnPlacePlot += OnPlacePlot;
+		_userInterface.OnPlacePlant += OnPlacePlant;
 		GrassLayer = GetNode<TileMapLayer>("GrassLayer");
 		PlotLayer = GetNode<TileMapLayer>("PlotLayer");
 		SetUpExpansionZones();
+		SetUpTimers();
+	}
+
+	public void SetUpTimers()
+	{
+		WaterTimer = new Timer
+		{
+			WaitTime = RandomNumberGenerator.RandiRange(5,15),
+			OneShot = false,
+			Autostart = true,
+		};
+		WaterTimer.Timeout += () =>
+		{
+			var area = ExpandedAreas[RandomNumberGenerator.RandiRange(0,ExpandedAreas.Count-1)];
+			var x = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.X - 40, (int)area.GlobalPosition.X + 40);
+			var y = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.Y - 40, (int)area.GlobalPosition.Y + 40);
+			SpawnWater(new Vector2(x,y));
+			WaterTimer.WaitTime = RandomNumberGenerator.RandiRange(5, 15);
+		};
+		AddChild(WaterTimer);
 		
 	}
 
+	public void SpawnWater(Vector2 position)
+	{
+		var water = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn").Instantiate<Water>();
+		water.Position = position;
+		AddChild(water);
+	}
 	private void SetUpExpansionZones()
 	{
 		var plotArea11 = GetNode<PlotArea>("PlotArea11");
@@ -44,8 +71,6 @@ public partial class GameScene : Node2D
 		
 		foreach (var plotArea in plotAreas)
 		{
-			plotArea.MouseEntered += OnMouseEnteredPlotArea;
-			plotArea.MouseExited += OnMouseExitedPlotArea;
 			plotArea.OnPlotAreaExpanded += ExpandLand;
 		}
 		
@@ -58,24 +83,14 @@ public partial class GameScene : Node2D
 		
 	}
 	
-	public void OnMouseEnteredPlotArea()
-	{
-		MouseInBounds = true;
-	}
-	public void OnMouseExitedPlotArea()
-	{
-		MouseInBounds = false;	
-	}
-	
 	private void OnPlacePlant(Plant plant)
 	{
-		Console.WriteLine("Plant placed");
 		if (BuildingsOnGrid[plant.GridPosition] is Plot plot)
 		{
 			AddChild(plant);
 			plot.Plant = plant;
 		}
-		UI.ActiveProduct = null;
+		_userInterface.ActiveProduct = null;
 	}
 
 	private void ExpandLand(PlotArea area)
@@ -105,15 +120,13 @@ public partial class GameScene : Node2D
 			PlotTiles.Add(gridPosition);
 			PlotLayer.SetCellsTerrainConnect(PlotTiles, 0, 0);
 		}
-		Console.WriteLine("Plot placed");
-		UI.ActiveProduct = null;
+		_userInterface.ActiveProduct = null;
 	}
 
 	private void OnPlaceBuilding(Building building)
 	{
 		BuildingsOnGrid[building.GridPosition] = building;
-		Console.WriteLine("Building placed");
-		UI.ActiveProduct = null;
+		_userInterface.ActiveProduct = null;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -122,7 +135,6 @@ public partial class GameScene : Node2D
 		{
 			Dragging = true; 
 			FocusedDraggable?.OnDragged();
-
 		}
 
 		if (@event.IsActionReleased(Inputs.LeftClick))
@@ -140,13 +152,10 @@ public partial class GameScene : Node2D
 			var deltaFloat = (float)delta;
 			FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
 			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition, 15 * deltaFloat);
-			
 		}
-		
-
 	}
 	
-	public Area2D InBounds(Vector2 position)
+	public PlotArea GetPlotAreaAt(Vector2 position)
 	{
 		foreach (var area in ExpandedAreas)
 		{
@@ -160,7 +169,6 @@ public partial class GameScene : Node2D
 				return area;
 			}
 		}
-
 		return null;
 	}
 }

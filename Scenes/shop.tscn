@@ -68,6 +68,8 @@ layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
+offset_left = -134.0
+offset_bottom = 330.0
 grow_horizontal = 0
 script = ExtResource("1_4xyim")
 
@@ -81,6 +83,7 @@ anchor_right = 1.0
 offset_left = -135.0
 offset_bottom = 328.0
 grow_horizontal = 0
+mouse_filter = 0
 theme = ExtResource("2_2sdfi")
 tab_alignment = 1
 current_tab = 0

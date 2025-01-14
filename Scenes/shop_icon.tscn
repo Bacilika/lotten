@@ -24,6 +24,7 @@ layout_mode = 1
 anchors_preset = -1
 offset_right = 16.0
 offset_bottom = 16.0
+action_mode = 0
 texture_normal = ExtResource("1_p68ms")
 texture_pressed = ExtResource("1_p68ms")
 stretch_mode = 0

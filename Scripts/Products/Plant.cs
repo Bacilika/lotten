@@ -36,6 +36,14 @@ public partial class Plant : Product, IDraggable
 			
 
 	}
+	public override void OnExitTree()
+	{
+		GrowthTimer.QueueFree();
+		foreach (var sprite in Sprites)
+		{
+			sprite.Dispose();
+		}
+	}
 
 	public override void CopyValuesFrom(Product product)
 	{
@@ -55,12 +63,11 @@ public partial class Plant : Product, IDraggable
 	private void GrowthTimerOnTimeout()
 	{
 		
-		Plot.Dry();
+		
 		GrowthStage++;
 		if (GrowthStage == Sprites.Count-2)
 		{
-			Plot.IsWatered = false;
-			Console.WriteLine("Plant fully grown");
+			Plot.Dry();
 			Draggable = true;
 			PlantSprite.Texture = Sprites[GrowthStage];
 			return;
@@ -114,12 +121,14 @@ public partial class Plant : Product, IDraggable
 	{
 		Harvested = true;
 		var physicsPlant = ResourceLoader.Load<PackedScene>("res://Scenes/physics_plant.tscn").Instantiate<PhysicsPlant>();
+		physicsPlant.GlobalPosition = GlobalPosition;
 		_gameScene.AddChild(physicsPlant);
 		physicsPlant.PlantSprite.Texture = Sprites.Last();
 		physicsPlant.SellPrice = SellPrice;
 		Plot.Plant = null;
 		_gameScene.FocusedDraggable = physicsPlant;
 		_gameScene.RemoveChild(this);
+		//OnExitTree();
 		QueueFree();
 	}
 }

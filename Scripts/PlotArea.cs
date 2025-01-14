@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+namespace Lotten.Scripts;
 public partial class PlotArea : Area2D
 {
 	public PlotArea PlotUp;
@@ -15,7 +15,6 @@ public partial class PlotArea : Area2D
 	public TextureButton ButtonRight;
 	
 	public Dictionary<TextureButton,PlotArea> ButtonForPlotAreas = new();
-
 	
 	[Signal]
 	public delegate void OnPlotAreaExpandedEventHandler(PlotArea area2D);
@@ -61,7 +60,7 @@ public partial class PlotArea : Area2D
 	public void OnExpansion(PlotArea neighbor)
 	{
 		foreach (var kvp in ButtonForPlotAreas
-			         .Where(kvp => kvp.Value == neighbor))
+					 .Where(kvp => kvp.Value == neighbor))
 		{
 			kvp.Key.Visible = false;
 		}

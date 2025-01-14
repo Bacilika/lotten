@@ -20,4 +20,9 @@ public abstract partial class Product : Area2D
 
     public abstract void CopyValuesFrom(Product product);
 
+    public virtual void OnExitTree()
+    {
+        //PlantSprite.QueueFree();
+    }
+
 }

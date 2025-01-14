@@ -15,7 +15,6 @@ public partial class Plot : Building
         if (body is Water water && !IsWatered)
         {
             IsWatered = true;
-            Console.WriteLine("Plot is watered");
             _gameScene.RemoveChild(water);
             BuildingScene.GetNode<Sprite2D>("water").Visible = true;
             water.QueueFree();
@@ -31,6 +30,7 @@ public partial class Plot : Building
     public void Dry()
     {
         BuildingScene.GetNode<Sprite2D>("water").Visible = false;
+        IsWatered = false;
     }
 
 

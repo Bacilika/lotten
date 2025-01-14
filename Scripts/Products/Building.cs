@@ -18,12 +18,12 @@ public partial class Building: Product
 
 	public virtual void OnBodyExited(Node2D body)
 	{
-		BuildingInstance.OnBodyExited(body);
+		BuildingInstance?.OnBodyExited(body);
 	}
 
 	public virtual void OnBodyEntered(Node2D body)
 	{
-		BuildingInstance.OnBodyEntered(body);
+		BuildingInstance?.OnBodyEntered(body);
 	}
 
 	public override void CopyValuesFrom(Product product)

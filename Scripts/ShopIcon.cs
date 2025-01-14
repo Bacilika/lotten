@@ -14,6 +14,7 @@ public partial class ShopIcon : Control
 	public override void _Ready()
 	{
 		Icon = GetNode<TextureButton>("TextureButton");
+		SetMouseFilter(MouseFilterEnum.Stop);
 	}
 	public Product GetProduct()
 	{
@@ -49,7 +50,6 @@ public partial class ShopIcon : Control
 	}
 	public void OnShopIconPressed()
 	{
-		Console.WriteLine("ShopIcon pressed");
 		Shop.EmitSignal(Shop.SignalName.OnShopButtonPressed, Product); //Emitted to UI.cs
 	}
 	
