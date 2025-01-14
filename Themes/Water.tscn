@@ -10,6 +10,7 @@ radius = 3.0
 [node name="Water" type="RigidBody2D"]
 top_level = true
 collision_layer = 3
+lock_rotation = true
 linear_damp = 30.0
 script = ExtResource("1_kbe84")
 

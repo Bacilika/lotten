@@ -14,10 +14,7 @@ public partial class GameScene : Node2D
 	public System.Collections.Generic.Dictionary<Vector2I,Building> BuildingsOnGrid  = new();
 	public IDraggable FocusedDraggable;
 	public bool Dragging;
-	public Area2D PlotArea;
 	public bool MouseInBounds;
-
-	public IDraggable ProductOutOfBounds;
 	
 	public List<Area2D> ExpandedAreas = [];
 
@@ -39,62 +36,37 @@ public partial class GameScene : Node2D
 
 	private void SetUpExpansionZones()
 	{
-		List<Area2D> plotAreas = [GetNode<Area2D>("PlotArea11"),GetNode<Area2D>("PlotArea00"),GetNode<Area2D>("PlotArea10"),GetNode<Area2D>("PlotArea01")];
+		var plotArea11 = GetNode<PlotArea>("PlotArea11");
+		var plotArea00 = GetNode<PlotArea>("PlotArea00");
+		var plotArea10 = GetNode<PlotArea>("PlotArea10");
+		var plotArea01 = GetNode<PlotArea>("PlotArea01");
+		List<PlotArea> plotAreas = [plotArea11,plotArea00,plotArea10,plotArea01];
+		
 		foreach (var plotArea in plotAreas)
 		{
 			plotArea.MouseEntered += OnMouseEnteredPlotArea;
 			plotArea.MouseExited += OnMouseExitedPlotArea;
+			plotArea.OnPlotAreaExpanded += ExpandLand;
 		}
-		var plotArea11 = GetNode<Area2D>("PlotArea11");
-		var plotArea00 = GetNode<Area2D>("PlotArea00");
-		var plotArea10 = GetNode<Area2D>("PlotArea10");
-		var plotArea01 = GetNode<Area2D>("PlotArea01");
-
 		
+		plotArea11.SetUp(plotArea10,null,plotArea01,null);
+		plotArea00.SetUp(null,plotArea01,null,plotArea10);
+		plotArea01.SetUp(plotArea00,null,null,plotArea11);
+		plotArea10.SetUp(null,plotArea11,plotArea00,null);
 		
-		ExpandedAreas.Add(plotArea11);
+		plotArea11.EmitSignal(PlotArea.SignalName.OnPlotAreaExpanded, plotArea11);
 		
-		//from plotArea11
-		PreparePlotArea(plotArea01,plotArea11.GetNode<TextureButton>("ExpandLeft"));
-		PreparePlotArea(plotArea10,plotArea11.GetNode<TextureButton>("ExpandUp"));
-		
-		//from plotArea01
-		PreparePlotArea(plotArea00, plotArea01.GetNode<TextureButton>("ExpandUp"));
-		
-		//from plotArea10
-		PreparePlotArea(plotArea00, plotArea10.GetNode<TextureButton>("ExpandLeft"));
-		
-		//from plotArea00
-		PreparePlotArea(plotArea01, plotArea00.GetNode<TextureButton>("ExpandDown"));
-		PreparePlotArea(plotArea10, plotArea00.GetNode<TextureButton>("ExpandRight"));
 	}
-
-
-
+	
 	public void OnMouseEnteredPlotArea()
 	{
 		MouseInBounds = true;
-		
 	}
 	public void OnMouseExitedPlotArea()
 	{
 		MouseInBounds = false;	
 	}
 	
-	public void PreparePlotArea(Area2D area2D, TextureButton button)
-	{
-		button.Visible = true;
-		button.Pressed += () =>
-		{
-			button.Visible = false;
-			area2D.Visible = true;
-			ExpandLand(area2D);
-			ExpandedAreas.Add(area2D);
-		};
-	}
-
-	
-
 	private void OnPlacePlant(Plant plant)
 	{
 		Console.WriteLine("Plant placed");
@@ -102,13 +74,13 @@ public partial class GameScene : Node2D
 		{
 			AddChild(plant);
 			plot.Plant = plant;
-			
 		}
 		UI.ActiveProduct = null;
 	}
 
-	private void ExpandLand(Area2D area)
+	private void ExpandLand(PlotArea area)
 	{
+		ExpandedAreas.Add(area);
 		var gridPosition = PlotLayer.LocalToMap(area.GlobalPosition- new Vector2(40,40));
 		for(var x = gridPosition.X; x < gridPosition.X + 5; x++)
 		{
@@ -124,7 +96,6 @@ public partial class GameScene : Node2D
 	{
 		AddChild(plot);
 		plot.BuildingInstance._gameScene = this;
-		
 		plot.GetNode<Sprite2D>("Sprite2D").Visible = false;
 		BuildingsOnGrid[plot.GridPosition] = plot.BuildingInstance;
 		var gridPosition = PlotLayer.LocalToMap(GetGlobalMousePosition());
@@ -150,7 +121,6 @@ public partial class GameScene : Node2D
 		if(@event.IsActionPressed(Inputs.LeftClick))
 		{
 			Dragging = true; 
-			ProductOutOfBounds = null;
 			FocusedDraggable?.OnDragged();
 
 		}
@@ -158,12 +128,6 @@ public partial class GameScene : Node2D
 		if (@event.IsActionReleased(Inputs.LeftClick))
 		{
 			Dragging = false;
-			if (!MouseInBounds && FocusedDraggable != null)
-			{
-				ProductOutOfBounds = FocusedDraggable;
-				
-				
-			}
 			FocusedDraggable?.OnDropped();
 			FocusedDraggable = null;
 		}
@@ -178,17 +142,11 @@ public partial class GameScene : Node2D
 			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition, 15 * deltaFloat);
 			
 		}
-		else if (ProductOutOfBounds is not null)
-		{
-			var deltaFloat = (float)delta;
-			ProductOutOfBounds.LerpedPosition = ProductOutOfBounds.PositionAtDragStart;
-			ProductOutOfBounds.GlobalPosition = ProductOutOfBounds.GlobalPosition.Lerp(ProductOutOfBounds.LerpedPosition, 10 * deltaFloat);
-			
-		}
+		
 
 	}
 	
-	public bool InBounds(Vector2 position)
+	public Area2D InBounds(Vector2 position)
 	{
 		foreach (var area in ExpandedAreas)
 		{
@@ -199,10 +157,10 @@ public partial class GameScene : Node2D
 			if(position.X > minx && position.X < maxx && 
 			   position.Y > miny && position.Y < maxy)
 			{
-				return true;
+				return area;
 			}
 		}
 
-		return false;
+		return null;
 	}
 }

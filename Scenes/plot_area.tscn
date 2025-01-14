@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6kltkj1wh0od"]
+[gd_scene load_steps=7 format=3 uid="uid://c6kltkj1wh0od"]
 
 [ext_resource type="Texture2D" uid="uid://do2egjmlemkqd" path="res://Sprites/expand2.png" id="1_1anga"]
+[ext_resource type="Script" path="res://Scripts/PlotArea.cs" id="1_ek0y8"]
 [ext_resource type="Texture2D" uid="uid://cag8srgyaurv" path="res://Sprites/expand4.png" id="2_wuy7x"]
 [ext_resource type="Texture2D" uid="uid://bkou7at2r8wry" path="res://Sprites/expand3.png" id="3_5kbgm"]
 [ext_resource type="Texture2D" uid="uid://bw7folkc6qhmq" path="res://Sprites/expand1.png" id="4_u7psf"]
@@ -9,6 +10,7 @@
 size = Vector2(80, 80)
 
 [node name="PlotArea" type="Area2D"]
+script = ExtResource("1_ek0y8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_kdwif")

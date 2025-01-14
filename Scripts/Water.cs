@@ -8,6 +8,8 @@ public partial class Water : RigidBody2D, IDraggable
 	private CollisionShape2D _collisionShape2D;
 	private Vector2 _shadowLerpedPosition;
 	private Sprite2D _shadow;
+	private Area2D lastPlotArea;
+	private bool _inAir;
 	
 
 	public void OnDropped()
@@ -15,6 +17,7 @@ public partial class Water : RigidBody2D, IDraggable
 		SetCollisionLayer(1|2);
 		ApplyForce(Vector2.Down * 10000);
 		_shadowLerpedPosition = Vector2.Zero;
+		_inAir = false;
 	}
 
 	public Vector2 LerpedPosition { get; set; }
@@ -28,16 +31,10 @@ public partial class Water : RigidBody2D, IDraggable
 		_collisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
-		BodyExited += OnBodyExited;
 		InputPickable = true;
 		_shadow = GetNode<Sprite2D>("shadow");
 		ContactMonitor = true;
 		MaxContactsReported = 1;
-	}
-
-	private void OnBodyExited(Node body)
-	{
-		Console.WriteLine("Body exited");
 	}
 
 
@@ -46,6 +43,17 @@ public partial class Water : RigidBody2D, IDraggable
 	{
 		var deltaFloat = (float)delta;
 		_shadow.Position = _shadow.Position.Lerp(_shadowLerpedPosition, 15 * deltaFloat);
+
+		if (_gameScene.InBounds(GlobalPosition) != null)
+		{
+		 	
+		 	lastPlotArea = _gameScene.InBounds(GlobalPosition);
+		}
+		else
+		{
+			if(!_inAir)
+				ApplyForce((lastPlotArea.GlobalPosition - GlobalPosition)*30);
+		}
 
 	}
 
@@ -70,6 +78,7 @@ public partial class Water : RigidBody2D, IDraggable
 		PositionAtDragStart = GlobalPosition;
 		SetCollisionLayer(1);
 		_shadowLerpedPosition = Vector2.Down * 5;
+		_inAir = true;
 	}
 	
 
