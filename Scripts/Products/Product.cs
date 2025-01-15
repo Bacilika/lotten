@@ -11,11 +11,11 @@ public abstract partial class Product : Area2D
     public Sprite2D PlantSprite;
     
     public Vector2I GridPosition;
-    public Vector2 lerpedPosition;
+    public Vector2 LerpedPosition;
 
     public override void _Ready()
     {
-        lerpedPosition = Position;
+        LerpedPosition = Position;
     }
 
     public abstract void CopyValuesFrom(Product product);

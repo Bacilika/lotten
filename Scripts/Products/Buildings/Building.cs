@@ -9,13 +9,32 @@ public partial class Building: Product
 	public Building BuildingScene;
 	public GameScene _gameScene;
 	public Func<Building> SubtypeGenerator;
+	public DrawableCircle AreaOfInfluence;
+	public bool focused;
 	public override void _Ready()
 	{
 		PlantSprite = GetNode<Sprite2D>("Sprite2D");
 		BodyEntered += OnBodyEntered;
 		BodyExited += OnBodyExited;
+		MouseEntered += OnMouseEntered;
+		MouseExited += OnMouseExited;
 		ReadyInstance();
 	
+	}
+
+	public void OnMouseExited()
+	{
+		focused = false;
+	}
+
+	public void OnMouseEntered()
+	{
+		focused = true;
+	}
+
+	public virtual void OnClick()
+	{
+		BuildingInstance?.OnClick();
 	}
 
 	public override void _Process(double delta)
@@ -48,6 +67,7 @@ public partial class Building: Product
 		}
 		
 	}
+	
 	public virtual void ReadyInstance()
 	{
 		
@@ -57,6 +77,17 @@ public partial class Building: Product
 	{
 		
 	}
+	public override void _Draw()
+	{
+		if(AreaOfInfluence != null)
+		{
+			DrawCircle(AreaOfInfluence.Position, AreaOfInfluence.Radius, AreaOfInfluence.Color);
+		}
+	}
+	
+	
+
+
 
 
 }

@@ -56,6 +56,11 @@ texture = ExtResource("6_tkggo")
 1:0/0 = 0
 1:0/0/custom_data_0 = 10
 1:0/0/custom_data_1 = "RainCollector"
+0:1/0 = 0
+0:1/0/custom_data_0 = 5
+0:1/0/custom_data_1 = "WaterTank"
+1:1/0 = 0
+1:1/0/custom_data_1 = "Temp"
 
 [sub_resource type="TileSet" id="TileSet_5dlqu"]
 custom_data_layer_0/name = "Price"
@@ -63,7 +68,7 @@ custom_data_layer_0/type = 2
 custom_data_layer_1/name = "Type"
 custom_data_layer_1/type = 4
 custom_data_layer_2/name = "SellPrice"
-custom_data_layer_2/type = 0
+custom_data_layer_2/type = 2
 sources/0 = SubResource("TileSetAtlasSource_f6w1f")
 
 [node name="Shop" type="Control"]
@@ -97,8 +102,9 @@ layout_mode = 2
 script = ExtResource("1_vxf8p")
 metadata/_tab_index = 0
 
-[node name="BoxContainer" type="BoxContainer" parent="TabContainer/Plants"]
+[node name="BoxContainer" type="GridContainer" parent="TabContainer/Plants"]
 layout_mode = 2
+columns = 3
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Plants"]
 tile_set = SubResource("TileSet_vym67")
@@ -109,8 +115,9 @@ layout_mode = 2
 script = ExtResource("2_13i8q")
 metadata/_tab_index = 1
 
-[node name="BoxContainer" type="BoxContainer" parent="TabContainer/Buildings"]
+[node name="BoxContainer" type="GridContainer" parent="TabContainer/Buildings"]
 layout_mode = 2
+columns = 3
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Buildings"]
 tile_set = SubResource("TileSet_5dlqu")

@@ -10,7 +10,7 @@ public partial class Water : RigidBody2D, IDraggable
 	private Sprite2D _shadow;
 	private PlotArea _lastPlotArea;
 	private bool _inAir;
-	
+	public bool Sucked = false;
 
 	public void OnDropped()
 	{
@@ -48,6 +48,7 @@ public partial class Water : RigidBody2D, IDraggable
 
 	public override void _PhysicsProcess(double delta)
 	{
+		
 		MoveAndCollide(new Vector2(0, 0));
 		if (_gameScene.GetPlotAreaAt(GlobalPosition) != null)
 		{

@@ -54,6 +54,7 @@ public partial class UI : CanvasLayer
 		_gameScene = GetParent<GameScene>();
 		_moneyLabel = GetNode<RichTextLabel>("MoneyLabel");
 		Money = 1000;
+		GetNode<Button>("Button").Pressed += () => { _gameScene.ToggleMode();};
 	}
 
 	public override void _Process(double delta)
@@ -64,8 +65,8 @@ public partial class UI : CanvasLayer
 			var deltaFloat = (float)delta;
 			ActiveProduct.GridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
 			var lerpPosition = ActiveProduct.GridPosition * 16 + new Vector2(8, 8);
-			ActiveProduct.lerpedPosition = new Vector2((lerpPosition.X+_gameScene.GetGlobalMousePosition().X)/2,(lerpPosition.Y+_gameScene.GetGlobalMousePosition().Y)/2);
-			ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.lerpedPosition, 15 * deltaFloat);
+			ActiveProduct.LerpedPosition = new Vector2((lerpPosition.X+_gameScene.GetGlobalMousePosition().X)/2,(lerpPosition.Y+_gameScene.GetGlobalMousePosition().Y)/2);
+			ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.LerpedPosition, 15 * deltaFloat);
 		}
 	}
 

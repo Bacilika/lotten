@@ -18,7 +18,8 @@ public partial class GameScene : Node2D
 	public bool Dragging;
 	public Timer WaterTimer;
 	public RandomNumberGenerator RandomNumberGenerator = new ();
-	
+	private PackedScene _waterScene = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn");
+	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
 
 	public override void _Ready()
@@ -35,13 +36,15 @@ public partial class GameScene : Node2D
 		PlotLayer = GetNode<TileMapLayer>("PlotLayer");
 		SetUpExpansionZones();
 		SetUpTimers();
+		_wireView = GetNode<Control>("WireView");
+		
 	}
 
 	public void SetUpTimers()
 	{
 		WaterTimer = new Timer
 		{
-			WaitTime = RandomNumberGenerator.RandiRange(5,15),
+			WaitTime = RandomNumberGenerator.RandiRange(1,2),
 			OneShot = false,
 			Autostart = true,
 		};
@@ -51,17 +54,18 @@ public partial class GameScene : Node2D
 			var x = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.X - 40, (int)area.GlobalPosition.X + 40);
 			var y = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.Y - 40, (int)area.GlobalPosition.Y + 40);
 			SpawnWater(new Vector2(x,y));
-			WaterTimer.WaitTime = RandomNumberGenerator.RandiRange(5, 15);
+			WaterTimer.WaitTime = RandomNumberGenerator.RandiRange(1, 2);
 		};
 		AddChild(WaterTimer);
 		
 	}
 
-	public void SpawnWater(Vector2 position)
+	public Water SpawnWater(Vector2 position)
 	{
-		var water = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn").Instantiate<Water>();
+		var water = _waterScene.Instantiate<Water>();
 		water.Position = position;
 		AddChild(water);
+		return water;
 	}
 	private void SetUpExpansionZones()
 	{
@@ -137,8 +141,16 @@ public partial class GameScene : Node2D
 	{
 		if(@event.IsActionPressed(Inputs.LeftClick))
 		{
-			Dragging = true; 
+			Dragging = true;
 			FocusedDraggable?.OnDragged();
+			foreach (var kvp in BuildingsOnGrid)
+			{
+				var building = kvp.Value;
+				if (building.focused)
+				{
+					building.OnClick();
+				}
+			}
 		}
 
 		if (@event.IsActionReleased(Inputs.LeftClick))
@@ -157,6 +169,11 @@ public partial class GameScene : Node2D
 			FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
 			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition,  15* deltaFloat);
 		}
+	}
+
+	public void ToggleMode()
+	{
+		_wireView.Visible = !_wireView.Visible;
 	}
 	
 	public PlotArea GetPlotAreaAt(Vector2 position)

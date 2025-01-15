@@ -12,7 +12,7 @@ public abstract partial class AbstractShopIconContainer : ScrollContainer
 	private Color _cantAfford = new(1, 0, 0); //red
 	private Color _disabled = new("#696969"); //gray
 
-	public BoxContainer ChildContainer;
+	public GridContainer ChildContainer;
 	public Shop GameShop;
 
 	public List<Product> Products = [];
@@ -23,7 +23,7 @@ public abstract partial class AbstractShopIconContainer : ScrollContainer
 	public override void _Ready()
 	{
 		ShopIconScene = ResourceLoader.Load<PackedScene>("res://Scenes/shop_icon.tscn");
-		ChildContainer = GetNode<BoxContainer>("BoxContainer");
+		ChildContainer = GetNode<GridContainer>("BoxContainer");
 		GameShop = GetParent().GetParent<Shop>();
 		LoadTextures();
 		foreach (var product in Products)
