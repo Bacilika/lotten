@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="2_2sdfi"]
 [ext_resource type="Script" path="res://Scripts/ExtrasTab.cs" id="2_13i8q"]
 [ext_resource type="Texture2D" uid="uid://4wlgl55jf0fh" path="res://Sprites/Plants.png" id="3_jl2ov"]
-[ext_resource type="Texture2D" uid="uid://c6v2jqec3pxhd" path="res://Sprites/dirticon.png" id="5_fhuj4"]
+[ext_resource type="Texture2D" uid="uid://bl8jbx4umsk5v" path="res://Tilemaps/Buildings.png" id="6_tkggo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ouiq6"]
 texture = ExtResource("3_jl2ov")
@@ -48,20 +48,23 @@ custom_data_layer_3/name = "GrowthTime"
 custom_data_layer_3/type = 2
 sources/0 = SubResource("TileSetAtlasSource_ouiq6")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p3qno"]
-texture = ExtResource("5_fhuj4")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f6w1f"]
+texture = ExtResource("6_tkggo")
 0:0/0 = 0
-0:0/0/custom_data_0 = "Plot"
-0:0/0/custom_data_1 = 2
+0:0/0/custom_data_0 = 2
+0:0/0/custom_data_1 = "Plot"
+1:0/0 = 0
+1:0/0/custom_data_0 = 10
+1:0/0/custom_data_1 = "RainCollector"
 
-[sub_resource type="TileSet" id="TileSet_pc3cx"]
-custom_data_layer_0/name = "Type"
-custom_data_layer_0/type = 4
-custom_data_layer_1/name = "Price"
-custom_data_layer_1/type = 2
+[sub_resource type="TileSet" id="TileSet_5dlqu"]
+custom_data_layer_0/name = "Price"
+custom_data_layer_0/type = 2
+custom_data_layer_1/name = "Type"
+custom_data_layer_1/type = 4
 custom_data_layer_2/name = "SellPrice"
-custom_data_layer_2/type = 2
-sources/0 = SubResource("TileSetAtlasSource_p3qno")
+custom_data_layer_2/type = 0
+sources/0 = SubResource("TileSetAtlasSource_f6w1f")
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -110,4 +113,4 @@ metadata/_tab_index = 1
 layout_mode = 2
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Buildings"]
-tile_set = SubResource("TileSet_pc3cx")
+tile_set = SubResource("TileSet_5dlqu")

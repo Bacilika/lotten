@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lotten.Scripts;
+using Lotten.Scripts.Products.Buildings;
+
 namespace Lotten.Scripts.Products;
 
 public partial class Plant : Product, IDraggable

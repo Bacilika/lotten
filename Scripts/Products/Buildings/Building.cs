@@ -14,6 +14,13 @@ public partial class Building: Product
 		PlantSprite = GetNode<Sprite2D>("Sprite2D");
 		BodyEntered += OnBodyEntered;
 		BodyExited += OnBodyExited;
+		ReadyInstance();
+	
+	}
+
+	public override void _Process(double delta)
+	{
+		BuildingInstance?.Tick(delta);
 	}
 
 	public virtual void OnBodyExited(Node2D body)
@@ -31,6 +38,7 @@ public partial class Building: Product
 		ProductName = product.ProductName;
 		Description = product.Description;
 		GridPosition = product.GridPosition;
+		GlobalPosition = product.GlobalPosition;
 		Cost = product.Cost;
 		if (product is Building building)
 		{ 
@@ -41,6 +49,11 @@ public partial class Building: Product
 		
 	}
 	public virtual void ReadyInstance()
+	{
+		
+	}
+
+	public virtual void Tick(double delta)
 	{
 		
 	}

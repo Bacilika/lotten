@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lotten.Scripts;
 using Lotten.Scripts.Products;
+using Lotten.Scripts.Products.Buildings;
 
 namespace Lotten.Scripts;
 
@@ -34,6 +35,13 @@ public partial class ExtrasTab : AbstractShopIconContainer
 							GridPosition = building.GridPosition,
 						};
 						break;
+					case "RainCollector":
+						building.SubtypeGenerator = () => new RainCollector
+						{
+							GridPosition = building.GridPosition,
+						};
+						break;
+					default: throw new NotImplementedException();
 					
 				}
 				building.ProductName = (string)tileData.GetCustomData("Type");

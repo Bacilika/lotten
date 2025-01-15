@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Lotten.Scripts.Products;
+namespace Lotten.Scripts.Products.Buildings;
 
 public partial class Plot : Building
 {

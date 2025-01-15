@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using Lotten.Scripts.Products;
+using Lotten.Scripts.Products.Buildings;
+
 namespace Lotten.Scripts;
 public partial class UI : CanvasLayer
 {

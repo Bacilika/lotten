@@ -465,7 +465,7 @@ script = ExtResource("1_ax46t")
 [node name="UI" parent="." instance=ExtResource("4_rdwre")]
 
 [node name="Water" parent="." instance=ExtResource("6_1gne7")]
-position = Vector2(42, 50)
+position = Vector2(32, 50)
 
 [node name="Water2" parent="." instance=ExtResource("6_1gne7")]
 position = Vector2(11, 10)

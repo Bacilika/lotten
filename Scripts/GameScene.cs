@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Godot.Collections;
 using Lotten.Scripts.Products;
+using Lotten.Scripts.Products.Buildings;
+
 namespace Lotten.Scripts;
 public partial class GameScene : Node2D
 {
@@ -126,7 +128,9 @@ public partial class GameScene : Node2D
 	private void OnPlaceBuilding(Building building)
 	{
 		BuildingsOnGrid[building.GridPosition] = building;
+		building.BuildingInstance._gameScene = this;
 		_userInterface.ActiveProduct = null;
+		AddChild(building);
 	}
 
 	public override void _Input(InputEvent @event)
@@ -151,7 +155,7 @@ public partial class GameScene : Node2D
 		{
 			var deltaFloat = (float)delta;
 			FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
-			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition, 15 * deltaFloat);
+			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition,  15* deltaFloat);
 		}
 	}
 	
