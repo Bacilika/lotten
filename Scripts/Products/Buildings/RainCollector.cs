@@ -42,10 +42,9 @@ public partial class RainCollector: Building
         var deltaFloat = (float)delta;
         foreach (var water in Waterlist)
         {
-           
-            water.LerpedPosition = BuildingScene.GlobalPosition;
-            water.GlobalPosition = water.GlobalPosition.Lerp(water.LerpedPosition, 1 * deltaFloat);
-            if(water.GlobalPosition.DistanceTo(BuildingScene.GlobalPosition) < 6)
+            var vel = (BuildingScene.GlobalPosition - water.GlobalPosition) / 10;
+           water.ApplyForce(vel*700*deltaFloat);
+            if(water.GlobalPosition.DistanceTo(BuildingScene.GlobalPosition) < 12)
             {
                 toRemove.Add(water);
             }

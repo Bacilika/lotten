@@ -22,6 +22,7 @@ public partial class GameScene : Node2D
 	private PackedScene _plotAreaScene = ResourceLoader.Load<PackedScene>("res://Scenes/plot_area.tscn");
 	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
+	public Vector2 DeadZone = new Vector2(5,5);
 
 	public override void _Ready()
 	{
@@ -66,6 +67,7 @@ public partial class GameScene : Node2D
 		var water = _waterScene.Instantiate<Water>();
 		water.Position = position;
 		AddChild(water);
+		water.OnDropped();
 		return water;
 	}
 	public void SetUpExpansionZone(Vector2 position)
@@ -154,16 +156,22 @@ public partial class GameScene : Node2D
 			FocusedDraggable = null;
 		}
 	}
-	
-	public override void _Process(double delta)
+
+	public override void _PhysicsProcess(double delta)
 	{
 		if (Dragging && FocusedDraggable != null)
 		{
 			var deltaFloat = (float)delta;
-			FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
-			FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition,  15* deltaFloat);
+			//FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
+			if (FocusedDraggable is RigidBody2D rigidBody2D && GetGlobalMousePosition().DistanceTo(FocusedDraggable.GlobalPosition) > 5)
+			{
+				rigidBody2D.ApplyForce((GetGlobalMousePosition() - rigidBody2D.GlobalPosition) * 5000*deltaFloat);
+			}
+			
+			//FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition,  15* deltaFloat);
 		}
 	}
+	
 
 	public void ToggleMode()
 	{
