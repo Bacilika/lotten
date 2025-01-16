@@ -64,7 +64,7 @@ public partial class UI : CanvasLayer
 		{
 			var deltaFloat = (float)delta;
 			ActiveProduct.GridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
-			var lerpPosition = ActiveProduct.GridPosition * 16 + new Vector2(8, 8);
+			var lerpPosition = ActiveProduct.GridPosition * Constants.TileSize + new Vector2(Constants.TileSize/2f, Constants.TileSize/2f);
 			ActiveProduct.LerpedPosition = new Vector2((lerpPosition.X+_gameScene.GetGlobalMousePosition().X)/2,(lerpPosition.Y+_gameScene.GetGlobalMousePosition().Y)/2);
 			ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.LerpedPosition, 15 * deltaFloat);
 		}

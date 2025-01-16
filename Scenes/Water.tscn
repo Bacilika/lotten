@@ -22,4 +22,5 @@ physics_interpolation_mode = 1
 shape = SubResource("CircleShape2D_87odc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_as_relative = false
 texture = ExtResource("1_8kkga")

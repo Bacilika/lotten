@@ -1,27 +1,25 @@
-[gd_scene load_steps=15 format=4 uid="uid://ci2ihu8ydwgjy"]
+[gd_scene load_steps=14 format=3 uid="uid://ci2ihu8ydwgjy"]
 
 [ext_resource type="Script" path="res://Scripts/Camera2d.cs" id="1_ax46t"]
 [ext_resource type="Script" path="res://Scripts/GameScene.cs" id="1_wv7bn"]
-[ext_resource type="Texture2D" uid="uid://bexjhy5cbo0ue" path="res://Tilemaps/Grass.png" id="2_mu0vq"]
-[ext_resource type="Texture2D" uid="uid://de47u7sfp6j6v" path="res://Tilemaps/dirt.png" id="3_b5wjw"]
+[ext_resource type="Texture2D" uid="uid://2wei4m3lhqlo" path="res://Tilemaps/GrassLayer.png" id="3_2jwrq"]
+[ext_resource type="Texture2D" uid="uid://c17axcs06w3oy" path="res://Tilemaps/DirtLayer.png" id="4_r0m56"]
 [ext_resource type="PackedScene" uid="uid://bvs7bam6x34rl" path="res://Scenes/ui.tscn" id="4_rdwre"]
 [ext_resource type="PackedScene" uid="uid://b88tbsugpwm12" path="res://Scenes/Water.tscn" id="6_1gne7"]
-[ext_resource type="PackedScene" uid="uid://c6kltkj1wh0od" path="res://Scenes/plot_area.tscn" id="7_1yq4v"]
 [ext_resource type="Texture2D" uid="uid://cb7f8od0vfv0w" path="res://Tilemaps/WaterPipe.png" id="8_4m3qn"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mrpfe"]
-texture = ExtResource("2_mu0vq")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6vjle"]
+texture = ExtResource("3_2jwrq")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 0:0/0/terrains_peering_bit/right_side = 0
 0:0/0/terrains_peering_bit/bottom_right_corner = 0
 0:0/0/terrains_peering_bit/bottom_side = 0
 1:0/0 = 0
 1:0/0/terrain_set = 0
 1:0/0/terrain = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0/terrains_peering_bit/right_side = 0
 1:0/0/terrains_peering_bit/bottom_right_corner = 0
 1:0/0/terrains_peering_bit/bottom_side = 0
@@ -30,14 +28,12 @@ texture = ExtResource("2_mu0vq")
 2:0/0 = 0
 2:0/0/terrain_set = 0
 2:0/0/terrain = 0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:0/0/terrains_peering_bit/bottom_side = 0
 2:0/0/terrains_peering_bit/bottom_left_corner = 0
 2:0/0/terrains_peering_bit/left_side = 0
 0:1/0 = 0
 0:1/0/terrain_set = 0
 0:1/0/terrain = 0
-0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 0:1/0/terrains_peering_bit/right_side = 0
 0:1/0/terrains_peering_bit/bottom_right_corner = 0
 0:1/0/terrains_peering_bit/bottom_side = 0
@@ -46,7 +42,6 @@ texture = ExtResource("2_mu0vq")
 1:1/0 = 0
 1:1/0/terrain_set = 0
 1:1/0/terrain = 0
-1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:1/0/terrains_peering_bit/right_side = 0
 1:1/0/terrains_peering_bit/bottom_right_corner = 0
 1:1/0/terrains_peering_bit/bottom_side = 0
@@ -55,26 +50,15 @@ texture = ExtResource("2_mu0vq")
 1:1/0/terrains_peering_bit/top_left_corner = 0
 1:1/0/terrains_peering_bit/top_side = 0
 1:1/0/terrains_peering_bit/top_right_corner = 0
-2:1/0 = 0
-2:1/0/terrain_set = 0
-2:1/0/terrain = 0
-2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:1/0/terrains_peering_bit/bottom_side = 0
-2:1/0/terrains_peering_bit/bottom_left_corner = 0
-2:1/0/terrains_peering_bit/left_side = 0
-2:1/0/terrains_peering_bit/top_left_corner = 0
-2:1/0/terrains_peering_bit/top_side = 0
 0:2/0 = 0
 0:2/0/terrain_set = 0
 0:2/0/terrain = 0
-0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 0:2/0/terrains_peering_bit/right_side = 0
 0:2/0/terrains_peering_bit/top_side = 0
 0:2/0/terrains_peering_bit/top_right_corner = 0
 1:2/0 = 0
 1:2/0/terrain_set = 0
 1:2/0/terrain = 0
-1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:2/0/terrains_peering_bit/right_side = 0
 1:2/0/terrains_peering_bit/left_side = 0
 1:2/0/terrains_peering_bit/top_left_corner = 0
@@ -83,25 +67,31 @@ texture = ExtResource("2_mu0vq")
 2:2/0 = 0
 2:2/0/terrain_set = 0
 2:2/0/terrain = 0
-2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:2/0/terrains_peering_bit/left_side = 0
 2:2/0/terrains_peering_bit/top_left_corner = 0
 2:2/0/terrains_peering_bit/top_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 0
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/bottom_left_corner = 0
+2:1/0/terrains_peering_bit/left_side = 0
+2:1/0/terrains_peering_bit/top_left_corner = 0
+2:1/0/terrains_peering_bit/top_side = 0
 
-[sub_resource type="TileSet" id="TileSet_35jf8"]
-physics_layer_0/collision_layer = 0
-physics_layer_0/collision_mask = 2
+[sub_resource type="TileSet" id="TileSet_8d02b"]
+tile_size = Vector2i(32, 32)
 terrain_set_0/mode = 0
-terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_mrpfe")
+terrain_set_0/terrain_0/name = "Grass"
+terrain_set_0/terrain_0/color = Color(0.717285, 0, 0.249903, 1)
+sources/0 = SubResource("TileSetAtlasSource_6vjle")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pnkdd"]
-texture = ExtResource("3_b5wjw")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qhtmb"]
+texture = ExtResource("4_r0m56")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
-0:0/0/terrains_peering_bit/bottom_side = 0
 1:0/0 = 0
 1:0/0/terrain_set = 0
 1:0/0/terrain = 0
@@ -181,7 +171,6 @@ texture = ExtResource("3_b5wjw")
 0:1/0/terrain_set = 0
 0:1/0/terrain = 0
 0:1/0/terrains_peering_bit/bottom_side = 0
-0:1/0/terrains_peering_bit/top_side = 0
 1:1/0 = 0
 1:1/0/terrain_set = 0
 1:1/0/terrain = 0
@@ -264,6 +253,7 @@ texture = ExtResource("3_b5wjw")
 0:2/0 = 0
 0:2/0/terrain_set = 0
 0:2/0/terrain = 0
+0:2/0/terrains_peering_bit/bottom_side = 0
 0:2/0/terrains_peering_bit/top_side = 0
 1:2/0 = 0
 1:2/0/terrain_set = 0
@@ -355,6 +345,7 @@ texture = ExtResource("3_b5wjw")
 0:3/0 = 0
 0:3/0/terrain_set = 0
 0:3/0/terrain = 0
+0:3/0/terrains_peering_bit/top_side = 0
 1:3/0 = 0
 1:3/0/terrain_set = 0
 1:3/0/terrain = 0
@@ -428,11 +419,12 @@ texture = ExtResource("3_b5wjw")
 11:3/0/terrains_peering_bit/top_left_corner = 0
 11:3/0/terrains_peering_bit/top_side = 0
 
-[sub_resource type="TileSet" id="TileSet_c82ia"]
+[sub_resource type="TileSet" id="TileSet_pxovp"]
+tile_size = Vector2i(32, 32)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0.127093, 0.463488, 1.92523e-07, 1)
-sources/0 = SubResource("TileSetAtlasSource_pnkdd")
+terrain_set_0/terrain_0/color = Color(0.150924, 0.212848, 1, 1)
+sources/0 = SubResource("TileSetAtlasSource_qhtmb")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xftq4"]
 texture = ExtResource("8_4m3qn")
@@ -526,27 +518,11 @@ sources/0 = SubResource("TileSetAtlasSource_xftq4")
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_wv7bn")
 
-[node name="PlotArea11" parent="." instance=ExtResource("7_1yq4v")]
-position = Vector2(40, 40)
-
-[node name="PlotArea01" parent="." instance=ExtResource("7_1yq4v")]
-visible = false
-position = Vector2(-40, 40)
-
-[node name="PlotArea10" parent="." instance=ExtResource("7_1yq4v")]
-visible = false
-position = Vector2(40, -40)
-
-[node name="PlotArea00" parent="." instance=ExtResource("7_1yq4v")]
-visible = false
-position = Vector2(-40, -40)
-
 [node name="GrassLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAABAAEAAAABAAEAAAACAAAAAAABAAAAAAACAAEAAAABAAEAAAAAAAEAAAAAAAEAAAADAAEAAAABAAEAAAAEAAEAAAACAAEAAAADAAAAAAABAAAAAAAEAAAAAAACAAAAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAIAAAABAAQAAAABAAIAAAABAAMAAAABAAEAAAABAAIAAAABAAEAAAACAAIAAAABAAEAAAACAAMAAAABAAEAAAACAAQAAAABAAIAAAADAAQAAAABAAIAAAADAAMAAAABAAEAAAADAAIAAAABAAEAAAAEAAMAAAACAAEAAAAEAAQAAAACAAIAAAAEAAIAAAACAAEAAAA=")
-tile_set = SubResource("TileSet_35jf8")
+tile_set = SubResource("TileSet_8d02b")
 
 [node name="PlotLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_c82ia")
+tile_set = SubResource("TileSet_pxovp")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -556,7 +532,7 @@ script = ExtResource("1_ax46t")
 position = Vector2(32, 50)
 
 [node name="Water2" parent="." instance=ExtResource("6_1gne7")]
-position = Vector2(11, 10)
+position = Vector2(17, 21)
 
 [node name="UI" parent="." instance=ExtResource("4_rdwre")]
 

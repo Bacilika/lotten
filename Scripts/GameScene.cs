@@ -19,6 +19,7 @@ public partial class GameScene : Node2D
 	public Timer WaterTimer;
 	public RandomNumberGenerator RandomNumberGenerator = new ();
 	private PackedScene _waterScene = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn");
+	private PackedScene _plotAreaScene = ResourceLoader.Load<PackedScene>("res://Scenes/plot_area.tscn");
 	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
 
@@ -34,7 +35,7 @@ public partial class GameScene : Node2D
 		_userInterface.OnPlacePlant += OnPlacePlant;
 		GrassLayer = GetNode<TileMapLayer>("GrassLayer");
 		PlotLayer = GetNode<TileMapLayer>("PlotLayer");
-		SetUpExpansionZones();
+		SetUpExpansionZone(Vector2.Zero);
 		SetUpTimers();
 		_wireView = GetNode<Control>("WireView");
 		
@@ -67,25 +68,12 @@ public partial class GameScene : Node2D
 		AddChild(water);
 		return water;
 	}
-	private void SetUpExpansionZones()
+	public void SetUpExpansionZone(Vector2 position)
 	{
-		var plotArea11 = GetNode<PlotArea>("PlotArea11");
-		var plotArea00 = GetNode<PlotArea>("PlotArea00");
-		var plotArea10 = GetNode<PlotArea>("PlotArea10");
-		var plotArea01 = GetNode<PlotArea>("PlotArea01");
-		List<PlotArea> plotAreas = [plotArea11,plotArea00,plotArea10,plotArea01];
-		
-		foreach (var plotArea in plotAreas)
-		{
-			plotArea.OnPlotAreaExpanded += ExpandLand;
-		}
-		
-		plotArea11.SetUp(plotArea10,null,plotArea01,null);
-		plotArea00.SetUp(null,plotArea01,null,plotArea10);
-		plotArea01.SetUp(plotArea00,null,null,plotArea11);
-		plotArea10.SetUp(null,plotArea11,plotArea00,null);
-		
-		plotArea11.EmitSignal(PlotArea.SignalName.OnPlotAreaExpanded, plotArea11);
+		var newPlot = _plotAreaScene.Instantiate<PlotArea>();
+		newPlot.GlobalPosition = position;
+		AddChild(newPlot);
+		ExpandLand(newPlot);
 		
 	}
 	
@@ -99,17 +87,23 @@ public partial class GameScene : Node2D
 		_userInterface.ActiveProduct = null;
 	}
 
-	private void ExpandLand(PlotArea area)
+	public void ExpandLand(PlotArea area)
 	{
 		ExpandedAreas.Add(area);
-		var gridPosition = PlotLayer.LocalToMap(area.GlobalPosition- new Vector2(40,40));
-		for(var x = gridPosition.X; x < gridPosition.X + 5; x++)
+		var gridPosition = GrassLayer.LocalToMap(area.GlobalPosition- new Vector2I(Constants.LandSize/2, Constants.LandSize/2)) ;
+		for(var x = gridPosition.X; x < gridPosition.X + Constants.LandTiles; x++)
 		{
-			for(var y = gridPosition.Y; y < gridPosition.Y + 5; y++)
+			for(var y = gridPosition.Y; y < gridPosition.Y + Constants.LandTiles; y++)
 			{
 				GrassTiles.Add(new Vector2I(x,y));
 				GrassLayer.SetCellsTerrainConnect(GrassTiles, 0, 0);
 			}
+		}
+
+		foreach (var expandedArea in ExpandedAreas)
+		{
+			expandedArea.DisableButtons(area);
+			area.DisableButtons(expandedArea);
 		}
 	}
 
@@ -120,7 +114,7 @@ public partial class GameScene : Node2D
 		plot.GetNode<Sprite2D>("Sprite2D").Visible = false;
 		BuildingsOnGrid[plot.GridPosition] = plot.BuildingInstance;
 		var gridPosition = PlotLayer.LocalToMap(GetGlobalMousePosition());
-		plot.GlobalPosition = gridPosition * 16 + new Vector2(8, 8);
+		plot.GlobalPosition = gridPosition * Constants.TileSize + new Vector2(Constants.TileSize/2f, Constants.TileSize/2f);
 		if (!PlotTiles.Contains(gridPosition))
 		{
 			PlotTiles.Add(gridPosition);
@@ -180,10 +174,10 @@ public partial class GameScene : Node2D
 	{
 		foreach (var area in ExpandedAreas)
 		{
-			var minx = area.GlobalPosition.X - 40;
-			var maxx = area.GlobalPosition.X + 40;
-			var miny = area.GlobalPosition.Y - 40;
-			var maxy = area.GlobalPosition.Y + 40;
+			var minx = area.GlobalPosition.X - Constants.LandSize/2f;
+			var maxx = area.GlobalPosition.X + Constants.LandSize/2f;
+			var miny = area.GlobalPosition.Y - Constants.LandSize/2f;
+			var maxy = area.GlobalPosition.Y + Constants.LandSize/2f;
 			if(position.X > minx && position.X < maxx && 
 			   position.Y > miny && position.Y < maxy)
 			{

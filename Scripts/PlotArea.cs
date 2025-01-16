@@ -5,64 +5,76 @@ using System.Linq;
 namespace Lotten.Scripts;
 public partial class PlotArea : Area2D
 {
-	public PlotArea PlotUp;
-	public PlotArea PlotDown;
-	public PlotArea PlotLeft;
-	public PlotArea PlotRight;
+	public Vector2 NeighBorUp;
+	public Vector2 NeighBorDown;
+	public Vector2 NeighBorLeft;
+	public Vector2 NeighBorRight;
+	
 	public TextureButton ButtonUp;
 	public TextureButton ButtonDown;
 	public TextureButton ButtonLeft;
 	public TextureButton ButtonRight;
 	
-	public Dictionary<TextureButton,PlotArea> ButtonForPlotAreas = new();
+	private GameScene _gameScene;
 	
-	[Signal]
-	public delegate void OnPlotAreaExpandedEventHandler(PlotArea area2D);
 
 	public override void _Ready()
 	{
+		_gameScene = GetParent<GameScene>();
 		ButtonUp = GetNode<TextureButton>("ExpandUp");
 		ButtonDown = GetNode<TextureButton>("ExpandDown");
 		ButtonLeft = GetNode<TextureButton>("ExpandLeft");
 		ButtonRight = GetNode<TextureButton>("ExpandRight");
+		
+		ButtonUp.Pressed += () => OnButtonPressed("up");
+		ButtonDown.Pressed += () => OnButtonPressed("down");
+		ButtonLeft.Pressed += () => OnButtonPressed("left");
+		ButtonRight.Pressed += () => OnButtonPressed("right");
+		
+		
+		NeighBorDown = new Vector2(GlobalPosition.X, GlobalPosition.Y + Constants.LandSize);
+		NeighBorUp = new Vector2(GlobalPosition.X, GlobalPosition.Y - Constants.LandSize);
+		NeighBorRight = new Vector2(GlobalPosition.X + Constants.LandSize, GlobalPosition.Y);
+		NeighBorLeft = new Vector2(GlobalPosition.X - Constants.LandSize, GlobalPosition.Y);
 	}
 	
-
-	public void SetUp(PlotArea up, PlotArea down, PlotArea left, PlotArea right)
+	
+	public void OnButtonPressed(string direction)
 	{
-		PlotUp = up;
-		PlotDown = down;
-		PlotLeft = left;
-		PlotRight = right;
-		ButtonForPlotAreas[ButtonUp] = up;
-		ButtonForPlotAreas[ButtonDown] = down;
-		ButtonForPlotAreas[ButtonLeft] = left;
-		ButtonForPlotAreas[ButtonRight] = right;
-
-		foreach (var kvp in ButtonForPlotAreas)
+		switch (direction)
 		{
-			var button = kvp.Key;
-			var connectedNeighbor = kvp.Value;
-			if(connectedNeighbor is not null)
-			{
-				OnPlotAreaExpanded += connectedNeighbor.OnExpansion;
-				
-				button.Visible = true;
-				button.Pressed += () =>
-				{
-					connectedNeighbor.Visible = true;
-					button.Visible = false;
-					connectedNeighbor.EmitSignal(SignalName.OnPlotAreaExpanded, connectedNeighbor);
-				};
-			}
+			case "up":
+				_gameScene.SetUpExpansionZone(NeighBorUp);
+				break;
+			case "down":
+				_gameScene.SetUpExpansionZone(NeighBorDown);
+				break;
+			case "left":
+				_gameScene.SetUpExpansionZone(NeighBorLeft);
+				break;
+			case "right":
+				_gameScene.SetUpExpansionZone(NeighBorRight);
+				break;
 		}
 	}
-	public void OnExpansion(PlotArea neighbor)
+
+	public void DisableButtons(PlotArea newPlotArea)
 	{
-		foreach (var kvp in ButtonForPlotAreas
-					 .Where(kvp => kvp.Value == neighbor))
+		if (newPlotArea.Position == NeighBorUp)
 		{
-			kvp.Key.Visible = false;
+			ButtonUp.Visible = false;
+		}
+		else if(newPlotArea.Position == NeighBorDown)
+		{
+			ButtonDown.Visible = false;
+		}
+		else if(newPlotArea.Position == NeighBorLeft)
+		{
+			ButtonLeft.Visible = false;
+		}
+		else if(newPlotArea.Position == NeighBorRight)
+		{
+			ButtonRight.Visible = false;
 		}
 	}
 
