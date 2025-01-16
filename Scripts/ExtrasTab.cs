@@ -40,7 +40,7 @@ public partial class ExtrasTab : AbstractShopIconContainer
 						{
 							GridPosition = building.GridPosition,
 						};
-						building.AreaOfInfluence = new DrawableCircle(32,Vector2.Zero, new Color(120/255f, 123/255f, 125/255f, 0.3f));
+						building.AreaOfInfluence = new DrawableCircle(64,Vector2.Zero, new Color(120/255f, 123/255f, 125/255f, 0.3f));
 						break;
 					case "WaterTank":
 						building.SubtypeGenerator = () => new WaterTank

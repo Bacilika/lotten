@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de47u7sfp6j6v"
-path="res://.godot/imported/dirt.png-30c68c08d24f34d75fe5793479dd3234.ctex"
+uid="uid://diyno0y87ddw7"
+path="res://.godot/imported/water.png-dc5c09208d5d66379671ada5b61e6c88.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Tilemaps/dirt.png"
-dest_files=["res://.godot/imported/dirt.png-30c68c08d24f34d75fe5793479dd3234.ctex"]
+source_file="res://Tilemaps/water.png"
+dest_files=["res://.godot/imported/water.png-dc5c09208d5d66379671ada5b61e6c88.ctex"]
 
 [params]
 

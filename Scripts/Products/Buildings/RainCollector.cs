@@ -19,7 +19,7 @@ public partial class RainCollector: Building
         CollectionShape = new CollisionShape2D();
         CollectionArea.AddChild(CollectionShape);
         CollectionShape.Shape = new CircleShape2D();
-        CollectionShape.Shape.Set("radius", 32);
+        CollectionShape.Shape.Set("radius", 64);
         CollectionArea.BodyEntered += OnRainEntered;
         CollectionArea.BodyExited += OnRainExited;
     }

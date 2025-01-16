@@ -4,72 +4,76 @@
 [ext_resource type="Script" path="res://Scripts/PlantsTab.cs" id="1_vxf8p"]
 [ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="2_2sdfi"]
 [ext_resource type="Script" path="res://Scripts/ExtrasTab.cs" id="2_13i8q"]
-[ext_resource type="Texture2D" uid="uid://4wlgl55jf0fh" path="res://Sprites/Plants.png" id="3_jl2ov"]
-[ext_resource type="Texture2D" uid="uid://bl8jbx4umsk5v" path="res://Tilemaps/Buildings.png" id="6_tkggo"]
+[ext_resource type="Texture2D" uid="uid://bhawbikjxryyy" path="res://Tilemaps/Plants.png" id="4_uwnrf"]
+[ext_resource type="Texture2D" uid="uid://e13ihs4oyxqk" path="res://Tilemaps/Buildings.png" id="6_tkggo"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ouiq6"]
-texture = ExtResource("3_jl2ov")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aqsb5"]
+texture = ExtResource("4_uwnrf")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+4:0/0/custom_data_0 = "Carrot"
+4:0/0/custom_data_1 = 1
+4:0/0/custom_data_2 = 2
+4:0/0/custom_data_3 = 1
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+4:1/0/custom_data_0 = "cucumber"
+4:1/0/custom_data_1 = 2
+4:1/0/custom_data_2 = 5
+4:1/0/custom_data_3 = 5
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
-3:0/0 = 0
-3:1/0 = 0
 3:2/0 = 0
-4:0/0 = 0
-4:0/0/custom_data_0 = 1
-4:0/0/custom_data_1 = "Carrot"
-4:0/0/custom_data_2 = 2
-4:0/0/custom_data_3 = 3
-4:1/0 = 0
-4:1/0/custom_data_0 = 2
-4:1/0/custom_data_1 = "Cucumber"
-4:1/0/custom_data_2 = 3
-4:1/0/custom_data_3 = 3
 4:2/0 = 0
-4:2/0/custom_data_0 = 3
-4:2/0/custom_data_1 = "Tomato"
-4:2/0/custom_data_2 = 5
-4:2/0/custom_data_3 = 3
+4:2/0/custom_data_0 = "Tomato"
+4:2/0/custom_data_1 = 3
+4:2/0/custom_data_2 = 6
+4:2/0/custom_data_3 = 6
 
-[sub_resource type="TileSet" id="TileSet_vym67"]
-custom_data_layer_0/name = "Price"
-custom_data_layer_0/type = 2
-custom_data_layer_1/name = "Name"
-custom_data_layer_1/type = 4
+[sub_resource type="TileSet" id="TileSet_pv57x"]
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "Name"
+custom_data_layer_0/type = 4
+custom_data_layer_1/name = "Price"
+custom_data_layer_1/type = 2
 custom_data_layer_2/name = "SellPrice"
 custom_data_layer_2/type = 2
 custom_data_layer_3/name = "GrowthTime"
 custom_data_layer_3/type = 2
-sources/0 = SubResource("TileSetAtlasSource_ouiq6")
+sources/0 = SubResource("TileSetAtlasSource_aqsb5")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f6w1f"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xtr42"]
 texture = ExtResource("6_tkggo")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
-0:0/0/custom_data_0 = 2
-0:0/0/custom_data_1 = "Plot"
+0:0/0/custom_data_0 = "Plot"
+0:0/0/custom_data_1 = 5
 1:0/0 = 0
-1:0/0/custom_data_0 = 10
-1:0/0/custom_data_1 = "RainCollector"
+1:0/0/custom_data_0 = "RainCollector"
+1:0/0/custom_data_1 = 5
 0:1/0 = 0
-0:1/0/custom_data_0 = 5
-0:1/0/custom_data_1 = "WaterTank"
+0:1/0/custom_data_0 = "WaterTank"
+0:1/0/custom_data_1 = 5
 1:1/0 = 0
-1:1/0/custom_data_1 = "Temp"
+1:1/0/custom_data_0 = "Temp"
 
-[sub_resource type="TileSet" id="TileSet_5dlqu"]
-custom_data_layer_0/name = "Price"
-custom_data_layer_0/type = 2
-custom_data_layer_1/name = "Type"
-custom_data_layer_1/type = 4
+[sub_resource type="TileSet" id="TileSet_ca5q7"]
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "Type"
+custom_data_layer_0/type = 4
+custom_data_layer_1/name = "Price"
+custom_data_layer_1/type = 2
 custom_data_layer_2/name = "SellPrice"
 custom_data_layer_2/type = 2
-sources/0 = SubResource("TileSetAtlasSource_f6w1f")
+sources/0 = SubResource("TileSetAtlasSource_xtr42")
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -88,8 +92,8 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -135.0
-offset_bottom = 328.0
+offset_left = -164.0
+offset_bottom = 342.0
 grow_horizontal = 0
 mouse_filter = 0
 theme = ExtResource("2_2sdfi")
@@ -107,7 +111,7 @@ layout_mode = 2
 columns = 3
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Plants"]
-tile_set = SubResource("TileSet_vym67")
+tile_set = SubResource("TileSet_pv57x")
 
 [node name="Buildings" type="ScrollContainer" parent="TabContainer"]
 visible = false
@@ -120,4 +124,4 @@ layout_mode = 2
 columns = 3
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TabContainer/Buildings"]
-tile_set = SubResource("TileSet_5dlqu")
+tile_set = SubResource("TileSet_ca5q7")
