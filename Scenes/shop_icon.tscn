@@ -1,30 +1,69 @@
-[gd_scene load_steps=3 format=3 uid="uid://dosivpharpaa6"]
+[gd_scene load_steps=8 format=3 uid="uid://dosivpharpaa6"]
 
 [ext_resource type="Script" path="res://Scripts/ShopIcon.cs" id="1_78ucd"]
 [ext_resource type="Texture2D" uid="uid://bpua06y1mfa4g" path="res://Sprites/shop.png" id="1_p68ms"]
+[ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="3_tao1b"]
 
-[node name="ShopIcon" type="Control"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -608.0
-offset_bottom = -328.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rh7kq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rg64w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_maq3s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xq7m3"]
+
+[node name="ShopIcon" type="Panel"]
+custom_minimum_size = Vector2(48, 48)
+offset_left = -32.0
+offset_top = -33.0
+offset_right = 31.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("3_tao1b")
 script = ExtResource("1_78ucd")
 
 [node name="TextureButton" type="TextureButton" parent="."]
 clip_contents = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
-anchors_preset = -1
-offset_right = 16.0
-offset_bottom = 16.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.5
+offset_top = -24.0
+offset_right = 16.5
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
 action_mode = 0
 texture_normal = ExtResource("1_p68ms")
 texture_pressed = ExtResource("1_p68ms")
+ignore_texture_size = true
 stretch_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.5
+offset_top = 7.0
+offset_right = 19.5
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_tao1b")
+theme_override_styles/fill = SubResource("StyleBoxEmpty_rh7kq")
+theme_override_styles/background = SubResource("StyleBoxEmpty_rg64w")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_maq3s")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xq7m3")
+bbcode_enabled = true
+text = "cost"
+scroll_active = false

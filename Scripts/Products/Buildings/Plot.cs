@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 
 namespace Lotten.Scripts.Products.Buildings;
 
@@ -16,10 +15,19 @@ public partial class Plot : Building
         {
             IsWatered = true;
             _gameScene.RemoveChild(water);
-            BuildingScene.GetNode<Sprite2D>("water").Visible = true;
+            WaterSoil();
             water.QueueFree();
             _plant?.StartGrowTimer();
             
+        }
+    }
+    
+    private void WaterSoil()
+    {
+        if (_gameScene.PlotTiles.Contains(GridPosition))
+        {
+            _gameScene.WaterTiles.Add(GridPosition);
+            _gameScene.WaterLayer.SetCellsTerrainConnect(_gameScene.WaterTiles, 0, 0);
         }
     }
 
@@ -29,7 +37,12 @@ public partial class Plot : Building
 
     public void Dry()
     {
-        BuildingScene.GetNode<Sprite2D>("water").Visible = false;
+        foreach (var tile in _gameScene.WaterTiles)
+        {
+            _gameScene.WaterLayer.EraseCell(tile);
+        }
+        _gameScene.WaterTiles.Remove(GridPosition);
+        _gameScene.WaterLayer.SetCellsTerrainConnect(_gameScene.WaterTiles, 0, 0);
         IsWatered = false;
     }
 

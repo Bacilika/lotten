@@ -52,6 +52,7 @@ public partial class Plant : Product, IDraggable
 		ProductName = product.ProductName;
 		Description = product.Description;
 		Cost = product.Cost;
+		SellPrice = product.SellPrice;
 		GridPosition = product.GridPosition;
 		if (product is Plant plant)
 		{

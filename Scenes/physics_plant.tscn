@@ -7,6 +7,7 @@
 radius = 3.0
 
 [node name="PhysicsPlant" type="RigidBody2D"]
+mass = 0.5
 lock_rotation = true
 linear_damp = 30.0
 script = ExtResource("1_hgyc4")

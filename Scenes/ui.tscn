@@ -5,20 +5,28 @@
 [ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="3_7gu0i"]
 
 [node name="UI" type="CanvasLayer"]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
 script = ExtResource("1_phsyq")
 
 [node name="Shop" parent="." instance=ExtResource("1_670hh")]
-offset_left = -135.0
-offset_top = 32.0
-offset_bottom = 359.0
+anchors_preset = -1
+anchor_left = 0.499
+anchor_right = 0.499
+offset_left = -163.72
+offset_top = 21.0
+offset_right = 0.279968
+offset_bottom = 363.0
 
 [node name="MoneyLabel" type="RichTextLabel" parent="."]
 layout_direction = 2
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -41.0
-offset_bottom = 28.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -207.0
+offset_top = 1.0
+offset_right = -166.0
+offset_bottom = 29.0
 grow_horizontal = 0
 theme = ExtResource("3_7gu0i")
 bbcode_enabled = true
@@ -28,9 +36,13 @@ scroll_active = false
 autowrap_mode = 0
 
 [node name="Button" type="Button" parent="."]
-offset_left = 536.0
-offset_top = 3.0
-offset_right = 587.0
-offset_bottom = 23.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -268.5
+offset_top = 3.5
+offset_right = -217.5
+offset_bottom = 25.5
+grow_horizontal = 2
 theme = ExtResource("3_7gu0i")
 text = "Mode"

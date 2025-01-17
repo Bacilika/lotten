@@ -60,6 +60,7 @@ Button/font_sizes/font_size = 16
 Button/fonts/font = ExtResource("1_7fbwn")
 Button/styles/disabled = ExtResource("2_3w6fp")
 Button/styles/normal = ExtResource("2_3w6fp")
+Panel/styles/panel = ExtResource("2_3w6fp")
 RichTextLabel/colors/default_color = Color(0.356497, 0.204564, 0.695126, 0.666667)
 RichTextLabel/constants/line_separation = 0
 RichTextLabel/constants/outline_size = 0

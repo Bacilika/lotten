@@ -11,12 +11,6 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 	public Vector2I GridPosition;
 	private PlotArea _lastPlotArea;
 	private bool _inAir;
-	public void OnDropped()
-	{
-		ApplyForce(Vector2.Down * 10000);
-		_shadowLerpedPosition = Vector2.Zero;
-		_inAir = false;
-	}
 
 	public Vector2 LerpedPosition { get; set; }
 	public Vector2 PositionAtDragStart { get; set; }
@@ -41,8 +35,11 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 		}
 		else
 		{
-			if(!_inAir && _lastPlotArea != null)
-				ApplyForce((_lastPlotArea.GlobalPosition - GlobalPosition)*30);
+			if (!_inAir && _lastPlotArea != null)
+			{
+				var vel = (_lastPlotArea.GlobalPosition - GlobalPosition) / 10;
+				ApplyForce(vel * 50);
+			}
 		}
 	}
 
@@ -68,9 +65,20 @@ public partial class PhysicsPlant : RigidBody2D, IDraggable
 
 	public void OnDragged()
 	{
+		LinearDamp = 15;
 		PositionAtDragStart = GlobalPosition;
 		SetCollisionLayer(1);
+		
 		_shadowLerpedPosition = Vector2.Down * 5;
 		_inAir = true;
 	}
+	public void OnDropped()
+	{
+		LinearDamp = 3;
+		ApplyForce(Vector2.Down * 100);
+		SetCollisionLayer(1|2);
+		_shadowLerpedPosition = Vector2.Zero;
+		_inAir = false;
+	}
+
 }

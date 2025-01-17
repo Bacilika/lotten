@@ -38,12 +38,14 @@ public partial class ShopIcon : Control
 		}
 		
 		//Icon.TextureNormal = product.HouseSprite.SpriteFrames.GetFrameTexture("Level0", 0);
-		var containerHeight = Size.Y;
-		var minimum = new Vector2(containerHeight, containerHeight);
+		/*var containerWidth = Shop.Size.X/4;
+		var minimum = new Vector2(containerWidth, containerWidth);
 		SetCustomMinimumSize(minimum);
 		Icon.SetCustomMinimumSize(minimum);
-		CustomMinimumSize = minimum;
-		Icon.TooltipText = product.ProductName + "\n" + product.Cost + " coins";
+		CallDeferred("set_size", minimum);
+		Icon.CallDeferred("set_size", minimum);*/
+		//Icon.TooltipText = product.ProductName + "\n" + product.Cost + " coins";
+		GetNode<RichTextLabel>("RichTextLabel").Text = $"[img]res://Sprites/coin.png[/img]x{product.Cost}";
 
 		Icon.Pressed += OnShopIconPressed;
 		//if (!product.IsUnlocked) Icon.Disabled = false;

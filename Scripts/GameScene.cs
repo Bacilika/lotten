@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Godot.Collections;
 using Lotten.Scripts.Products;
 using Lotten.Scripts.Products.Buildings;
+using Array = Godot.Collections.Array;
 
 namespace Lotten.Scripts;
 public partial class GameScene : Node2D
@@ -11,8 +12,10 @@ public partial class GameScene : Node2D
 	private UI _userInterface;
 	public TileMapLayer GrassLayer;
 	public TileMapLayer PlotLayer;
+	public TileMapLayer WaterLayer;
 	public Array<Vector2I> PlotTiles = [];
 	public Array<Vector2I> GrassTiles = [];
+	public Array<Vector2I> WaterTiles = [];
 	public System.Collections.Generic.Dictionary<Vector2I,Building> BuildingsOnGrid  = new();
 	public IDraggable FocusedDraggable;
 	public bool Dragging;
@@ -36,6 +39,7 @@ public partial class GameScene : Node2D
 		_userInterface.OnPlacePlant += OnPlacePlant;
 		GrassLayer = GetNode<TileMapLayer>("GrassLayer");
 		PlotLayer = GetNode<TileMapLayer>("PlotLayer");
+		WaterLayer = GetNode<TileMapLayer>("WaterLayer");
 		SetUpExpansionZone(Vector2.Zero);
 		SetUpTimers();
 		_wireView = GetNode<Control>("WireView");
@@ -61,6 +65,14 @@ public partial class GameScene : Node2D
 		AddChild(WaterTimer);
 		
 	}
+	public void UpdateMoney(int amount)
+	{
+		_userInterface.Money += amount;
+	}
+	public int GetMoney()
+	{
+		return _userInterface.Money;
+	} 
 
 	public Water SpawnWater(Vector2 position)
 	{
@@ -93,9 +105,9 @@ public partial class GameScene : Node2D
 	{
 		ExpandedAreas.Add(area);
 		var gridPosition = GrassLayer.LocalToMap(area.GlobalPosition- new Vector2I(Constants.LandSize/2, Constants.LandSize/2)) ;
-		for(var x = gridPosition.X; x < gridPosition.X + Constants.LandTiles; x++)
+		for(var x = gridPosition.X-1; x < gridPosition.X + Constants.LandTiles+1; x++)
 		{
-			for(var y = gridPosition.Y; y < gridPosition.Y + Constants.LandTiles; y++)
+			for(var y = gridPosition.Y-1; y < gridPosition.Y + Constants.LandTiles+1; y++)
 			{
 				GrassTiles.Add(new Vector2I(x,y));
 				GrassLayer.SetCellsTerrainConnect(GrassTiles, 0, 0);
@@ -124,6 +136,7 @@ public partial class GameScene : Node2D
 		}
 		_userInterface.ActiveProduct = null;
 	}
+	
 
 	private void OnPlaceBuilding(Building building)
 	{
