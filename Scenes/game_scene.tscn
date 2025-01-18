@@ -600,7 +600,7 @@ texture_region_size = Vector2i(32, 32)
 2:38/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_d6qjw"]
-tile_size = Vector2i(32, 32)
+tile_size = Vector2i(32, 24)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.712782, 0, 0.287996, 1)
@@ -977,7 +977,7 @@ texture_region_size = Vector2i(32, 32)
 2:8/0/terrains_peering_bit/top_right_corner = 0
 
 [sub_resource type="TileSet" id="TileSet_w1svj"]
-tile_size = Vector2i(32, 32)
+tile_size = Vector2i(32, 24)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.188185, 0.200319, 1, 1)
@@ -1323,7 +1323,7 @@ texture_region_size = Vector2i(32, 32)
 2:8/0/terrain_set = 0
 
 [sub_resource type="TileSet" id="TileSet_devwq"]
-tile_size = Vector2i(32, 32)
+tile_size = Vector2i(32, 24)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.704035, 4.81308e-08, 0.348007, 1)

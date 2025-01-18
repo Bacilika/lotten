@@ -9,7 +9,7 @@ public partial class Water : RigidBody2D, IDraggable
 	private Vector2 _shadowLerpedPosition;
 	private Sprite2D _shadow;
 	private PlotArea _lastPlotArea;
-	private bool _inAir;
+	public bool InAir;
 	public bool Sucked = false;
 
 	
@@ -50,7 +50,7 @@ public partial class Water : RigidBody2D, IDraggable
 		}
 		else //out of bounds
 		{
-			if (!_inAir && _lastPlotArea != null)
+			if (!InAir && _lastPlotArea != null)
 			{
 				var vel = (_lastPlotArea.GlobalPosition - GlobalPosition) / 10;
 				ApplyForce(vel*50);
@@ -76,7 +76,7 @@ public partial class Water : RigidBody2D, IDraggable
 		SetCollisionLayer(1);
 		_shadowLerpedPosition = Vector2.Down * 5;
 		LinearDamp = 15;
-		_inAir = true;
+		InAir = true;
 	}
 	public void OnDropped()
 	{
@@ -84,6 +84,6 @@ public partial class Water : RigidBody2D, IDraggable
 		SetCollisionLayer(1|2);
 		ApplyForce(Vector2.Down * 100);
 		_shadowLerpedPosition = Vector2.Zero;
-		_inAir = false;
+		InAir = false;
 	}
 }

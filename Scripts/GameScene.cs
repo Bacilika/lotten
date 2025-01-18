@@ -25,7 +25,8 @@ public partial class GameScene : Node2D
 	private PackedScene _plotAreaScene = ResourceLoader.Load<PackedScene>("res://Scenes/plot_area.tscn");
 	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
-	public Vector2 DeadZone = new Vector2(5,5);
+	public Vector2 DeadZone = new(5,5);
+	public TileMapValues TileMapValues = new TileMapValues();
 
 	public override void _Ready()
 	{
@@ -50,7 +51,7 @@ public partial class GameScene : Node2D
 	{
 		WaterTimer = new Timer
 		{
-			WaitTime = RandomNumberGenerator.RandiRange(1,2),
+			WaitTime = RandomNumberGenerator.RandiRange(15,20),
 			OneShot = false,
 			Autostart = true,
 		};
@@ -60,7 +61,7 @@ public partial class GameScene : Node2D
 			var x = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.X - 40, (int)area.GlobalPosition.X + 40);
 			var y = RandomNumberGenerator.RandiRange((int)area.GlobalPosition.Y - 40, (int)area.GlobalPosition.Y + 40);
 			SpawnWater(new Vector2(x,y));
-			WaterTimer.WaitTime = RandomNumberGenerator.RandiRange(1, 2);
+			WaterTimer.WaitTime = RandomNumberGenerator.RandiRange(15, 20);
 		};
 		AddChild(WaterTimer);
 		
@@ -104,10 +105,10 @@ public partial class GameScene : Node2D
 	public void ExpandLand(PlotArea area)
 	{
 		ExpandedAreas.Add(area);
-		var gridPosition = GrassLayer.LocalToMap(area.GlobalPosition- new Vector2I(Constants.LandSize/2, Constants.LandSize/2)) ;
-		for(var x = gridPosition.X-1; x < gridPosition.X + Constants.LandTiles+1; x++)
+		var gridPosition = GrassLayer.LocalToMap(area.GlobalPosition- TileMapValues.LandSize/2);
+		for(var x = gridPosition.X-1; x < gridPosition.X + TileMapValues.LandTiles+1; x++)
 		{
-			for(var y = gridPosition.Y-1; y < gridPosition.Y + Constants.LandTiles+1; y++)
+			for(var y = gridPosition.Y-1; y < gridPosition.Y + TileMapValues.LandTiles+1; y++)
 			{
 				GrassTiles.Add(new Vector2I(x,y));
 				GrassLayer.SetCellsTerrainConnect(GrassTiles, 0, 0);
@@ -128,7 +129,7 @@ public partial class GameScene : Node2D
 		plot.GetNode<Sprite2D>("Sprite2D").Visible = false;
 		BuildingsOnGrid[plot.GridPosition] = plot.BuildingInstance;
 		var gridPosition = PlotLayer.LocalToMap(GetGlobalMousePosition());
-		plot.GlobalPosition = gridPosition * Constants.TileSize + new Vector2(Constants.TileSize/2f, Constants.TileSize/2f);
+		plot.GlobalPosition = PlotLayer.MapToLocal(gridPosition);
 		if (!PlotTiles.Contains(gridPosition))
 		{
 			PlotTiles.Add(gridPosition);
@@ -141,6 +142,7 @@ public partial class GameScene : Node2D
 	private void OnPlaceBuilding(Building building)
 	{
 		BuildingsOnGrid[building.GridPosition] = building;
+		building.GlobalPosition = GrassLayer.MapToLocal(building.GridPosition);
 		building.BuildingInstance._gameScene = this;
 		_userInterface.ActiveProduct = null;
 		AddChild(building);
@@ -195,10 +197,10 @@ public partial class GameScene : Node2D
 	{
 		foreach (var area in ExpandedAreas)
 		{
-			var minx = area.GlobalPosition.X - Constants.LandSize/2f;
-			var maxx = area.GlobalPosition.X + Constants.LandSize/2f;
-			var miny = area.GlobalPosition.Y - Constants.LandSize/2f;
-			var maxy = area.GlobalPosition.Y + Constants.LandSize/2f;
+			var minx = area.GlobalPosition.X - TileMapValues.LandSize.X/2f;
+			var maxx = area.GlobalPosition.X + TileMapValues.LandSize.X/2f;
+			var miny = area.GlobalPosition.Y - TileMapValues.LandSize.Y/2f;
+			var maxy = area.GlobalPosition.Y + TileMapValues.LandSize.Y/2f;
 			if(position.X > minx && position.X < maxx && 
 			   position.Y > miny && position.Y < maxy)
 			{

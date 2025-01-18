@@ -32,10 +32,10 @@ public partial class PlotArea : Area2D
 		ButtonRight.Pressed += () => OnButtonPressed("right");
 		
 		
-		NeighBorDown = new Vector2(GlobalPosition.X, GlobalPosition.Y + Constants.LandSize);
-		NeighBorUp = new Vector2(GlobalPosition.X, GlobalPosition.Y - Constants.LandSize);
-		NeighBorRight = new Vector2(GlobalPosition.X + Constants.LandSize, GlobalPosition.Y);
-		NeighBorLeft = new Vector2(GlobalPosition.X - Constants.LandSize, GlobalPosition.Y);
+		NeighBorDown = new Vector2(GlobalPosition.X, GlobalPosition.Y + _gameScene.TileMapValues.LandSize.Y);
+		NeighBorUp = new Vector2(GlobalPosition.X, GlobalPosition.Y - _gameScene.TileMapValues.LandSize.Y);
+		NeighBorRight = new Vector2(GlobalPosition.X + _gameScene.TileMapValues.LandSize.X, GlobalPosition.Y);
+		NeighBorLeft = new Vector2(GlobalPosition.X - _gameScene.TileMapValues.LandSize.X, GlobalPosition.Y);
 	}
 	
 	

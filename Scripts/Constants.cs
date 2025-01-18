@@ -1,14 +1,25 @@
 
+using Godot;
+
 namespace Lotten.Scripts;
 
 public static class Constants
 {
 	public const string ViewPortHeightSettingPath = "display/window/size/viewport_height";
 	public const string ViewPortWidthSettingPath = "display/window/size/viewport_width";
-	public const int TileSize = 32;
-	public const int LandTiles = 4;
-	public const int LandSize = TileSize * LandTiles;
 
+}
+
+public class TileMapValues
+{
+	public  Vector2 TileSize;
+	public const int LandTiles = 4;
+	public Vector2 LandSize;
+	public TileMapValues()
+	{
+		TileSize = new Vector2(32,24);
+		LandSize = TileSize * LandTiles;
+	}
 }
 public static class CustomData
 {

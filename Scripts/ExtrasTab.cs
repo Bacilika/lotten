@@ -54,6 +54,12 @@ public partial class ExtrasTab : AbstractShopIconContainer
 							GridPosition = building.GridPosition,
 						};
 						break;
+					case "Launcher":
+						building.SubtypeGenerator = () => new Launcher
+						{
+							GridPosition = building.GridPosition,
+						};
+						break;
 
 					default: throw new NotImplementedException();
 					

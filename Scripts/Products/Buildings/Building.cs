@@ -18,8 +18,12 @@ public partial class Building: Product
 		BodyExited += OnBodyExited;
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
-		ReadyInstance();
-	
+		if (BuildingInstance is not null)
+		{
+			_gameScene = GetParent<GameScene>();
+			BuildingInstance.ReadyInstance();
+		}
+		
 	}
 
 	public void OnMouseExited()
@@ -35,6 +39,10 @@ public partial class Building: Product
 	public virtual void OnClick()
 	{
 		BuildingInstance?.OnClick();
+	}
+	public override void _PhysicsProcess(double delta)
+	{
+		BuildingInstance?.PhysicsTick(delta);
 	}
 
 	public override void _Process(double delta)
@@ -63,7 +71,8 @@ public partial class Building: Product
 		{ 
 			BuildingInstance = building.SubtypeGenerator();
 			BuildingInstance.BuildingScene = this;
-			BuildingInstance.ReadyInstance();
+			
+			
 		}
 		
 	}
@@ -74,6 +83,10 @@ public partial class Building: Product
 	}
 
 	public virtual void Tick(double delta)
+	{
+		
+	}
+	public virtual void PhysicsTick(double delta)
 	{
 		
 	}
