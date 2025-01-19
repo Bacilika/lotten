@@ -28,7 +28,19 @@ public partial class Launcher:Building
         launchTimer.WaitTime = 5;
         gameScene.AddChild(launchTimer);
         launchTimer.Start();
-        
+        var button = new Button
+        {
+            Text = "Set Targets",
+            
+        };
+        button.AddThemeFontSizeOverride("normal", 9);
+        button.Pressed += SetLaunchTargets;
+        BuildingScene.BuildingActions.Add(button);
+    }
+
+    public void SetLaunchTargets()
+    {
+        Console.WriteLine("Setting launch targets");
     }
 
     public override void PhysicsTick(double delta)

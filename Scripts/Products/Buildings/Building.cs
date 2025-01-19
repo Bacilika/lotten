@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
-namespace Lotten.Scripts.Products;
+namespace Lotten.Scripts.Products.Buildings;
 
 public partial class Building: Product
 {
@@ -11,6 +12,10 @@ public partial class Building: Product
 	public Func<Building> SubtypeGenerator;
 	public DrawableCircle AreaOfInfluence;
 	public bool focused;
+	public List<Button> BuildingActions = []; //TODO: QueueFree all buttons
+
+	[Signal]
+	public delegate void OnShowBuildingInfoEventHandler(Building building, bool visible);
 	public override void _Ready()
 	{
 		PlantSprite = GetNode<Sprite2D>("Sprite2D");
@@ -18,11 +23,8 @@ public partial class Building: Product
 		BodyExited += OnBodyExited;
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
-		if (BuildingInstance is not null)
-		{
-			_gameScene = GetParent<GameScene>();
-			BuildingInstance.ReadyInstance();
-		}
+		BuildingInstance?.ReadyInstance();
+		
 		
 	}
 
@@ -74,7 +76,6 @@ public partial class Building: Product
 			
 			
 		}
-		
 	}
 	
 	public virtual void ReadyInstance()
@@ -95,6 +96,28 @@ public partial class Building: Product
 		if(AreaOfInfluence != null)
 		{
 			DrawCircle(AreaOfInfluence.Position, AreaOfInfluence.Radius, AreaOfInfluence.Color);
+		}
+	}
+	public override void _Input(InputEvent @event)
+	{
+		if(focused)
+		{
+			if(@event.IsActionPressed(Inputs.LeftClick))
+			{
+				OnClick();
+			}
+			if(@event.IsActionPressed(Inputs.RightClick))
+			{
+				EmitSignal(SignalName.OnShowBuildingInfo, this, true);
+			}
+			
+		}
+		else
+		{
+			if(@event.IsActionPressed(Inputs.RightClick))
+			{
+				EmitSignal(SignalName.OnShowBuildingInfo, this, false);
+			}
 		}
 	}
 	

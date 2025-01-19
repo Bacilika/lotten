@@ -18,6 +18,7 @@ public partial class UI : CanvasLayer
 	private Product _activeProduct;
 	private RichTextLabel _moneyLabel;
 	private int _money;
+	private BuildingInfo _buildingInfo;
 	public int Money
 	{
 		get=>_money;
@@ -55,19 +56,20 @@ public partial class UI : CanvasLayer
 		_moneyLabel = GetNode<RichTextLabel>("MoneyLabel");
 		Money = 1000;
 		GetNode<Button>("Button").Pressed += () => { _gameScene.ToggleMode();};
+		_buildingInfo = GetNode<BuildingInfo>("BuildingInfo");
+		(_buildingInfo.GetNode<Button>("Close")).Pressed += ShowShop;
+
 	}
 
 	public override void _Process(double delta)
 	{
+		if (ActiveProduct == null) return;
 		
-		if(ActiveProduct != null)
-		{
-			var deltaFloat = (float)delta;
-			ActiveProduct.GridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
-			var lerpPosition = _gameScene.GrassLayer.MapToLocal(ActiveProduct.GridPosition);
-			ActiveProduct.LerpedPosition = new Vector2((lerpPosition.X+_gameScene.GetGlobalMousePosition().X)/2,(lerpPosition.Y+_gameScene.GetGlobalMousePosition().Y)/2);
-			ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.LerpedPosition, 15 * deltaFloat);
-		}
+		var deltaFloat = (float)delta;
+		ActiveProduct.GridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
+		var targetGridPosition = _gameScene.GrassLayer.MapToLocal(ActiveProduct.GridPosition);
+		ActiveProduct.LerpedPosition = targetGridPosition.Lerp(_gameScene.GetGlobalMousePosition(), 0.25f);;
+		ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.LerpedPosition, 15 * deltaFloat);
 	}
 
 	public void OnPlaceProduct(Product product)
@@ -143,5 +145,33 @@ public partial class UI : CanvasLayer
 	public void OnShopButtonPressed(Product product)
 	{
 		ActiveProduct = product;
+	}
+	private void ShowShop()
+	{
+		shop.Visible = true;
+		_buildingInfo.Visible = false;
+	}
+	private void HideShop()
+	{
+		shop.Visible = false;
+		_buildingInfo.Visible = true;
+	}
+
+	public void OnShowBuildingInfo(Building building, bool visible)
+	{
+		Console.WriteLine("OnShowBuildingInfo");
+		if(visible)
+		{
+			HideShop();
+			_buildingInfo.ShowBuildingInfo(building);
+		}
+		else
+		{
+			if(building == _buildingInfo.Building) //close requested by open building
+			{
+				ShowShop();
+			}
+			
+		}
 	}
 }

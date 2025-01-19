@@ -26,7 +26,7 @@ public partial class GameScene : Node2D
 	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
 	public Vector2 DeadZone = new(5,5);
-	public TileMapValues TileMapValues = new TileMapValues();
+	public TileMapValues TileMapValues = new ();
 
 	public override void _Ready()
 	{
@@ -92,16 +92,6 @@ public partial class GameScene : Node2D
 		
 	}
 	
-	private void OnPlacePlant(Plant plant)
-	{
-		if (BuildingsOnGrid[plant.GridPosition] is Plot plot)
-		{
-			AddChild(plant);
-			plot.Plant = plant;
-		}
-		_userInterface.ActiveProduct = null;
-	}
-
 	public void ExpandLand(PlotArea area)
 	{
 		ExpandedAreas.Add(area);
@@ -124,28 +114,41 @@ public partial class GameScene : Node2D
 
 	private void OnPlacePlot(Building plot)
 	{
-		AddChild(plot);
-		plot.BuildingInstance._gameScene = this;
+		PrepBuilding(plot);
 		plot.GetNode<Sprite2D>("Sprite2D").Visible = false;
-		BuildingsOnGrid[plot.GridPosition] = plot.BuildingInstance;
-		var gridPosition = PlotLayer.LocalToMap(GetGlobalMousePosition());
-		plot.GlobalPosition = PlotLayer.MapToLocal(gridPosition);
-		if (!PlotTiles.Contains(gridPosition))
+		if (!PlotTiles.Contains(plot.GridPosition))
 		{
-			PlotTiles.Add(gridPosition);
+			PlotTiles.Add(plot.GridPosition);
 			PlotLayer.SetCellsTerrainConnect(PlotTiles, 0, 0);
 		}
 		_userInterface.ActiveProduct = null;
+	}
+
+	private void PrepBuilding(Building building)
+	{
+		building._gameScene = this;
+		building.BuildingInstance._gameScene = this;
+		building.GlobalPosition = PlotLayer.MapToLocal(building.GridPosition);
+		BuildingsOnGrid[building.GridPosition] = building;
+		building.OnShowBuildingInfo += _userInterface.OnShowBuildingInfo;
+		AddChild(building);
 	}
 	
 
 	private void OnPlaceBuilding(Building building)
 	{
-		BuildingsOnGrid[building.GridPosition] = building;
-		building.GlobalPosition = GrassLayer.MapToLocal(building.GridPosition);
-		building.BuildingInstance._gameScene = this;
+		PrepBuilding(building);
 		_userInterface.ActiveProduct = null;
-		AddChild(building);
+	}
+	
+	private void OnPlacePlant(Plant plant)
+	{
+		if (BuildingsOnGrid[plant.GridPosition] is Plot plot)
+		{
+			AddChild(plant);
+			plot.Plant = plant;
+		}
+		_userInterface.ActiveProduct = null;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -154,14 +157,6 @@ public partial class GameScene : Node2D
 		{
 			Dragging = true;
 			FocusedDraggable?.OnDragged();
-			foreach (var kvp in BuildingsOnGrid)
-			{
-				var building = kvp.Value;
-				if (building.focused)
-				{
-					building.OnClick();
-				}
-			}
 		}
 
 		if (@event.IsActionReleased(Inputs.LeftClick))

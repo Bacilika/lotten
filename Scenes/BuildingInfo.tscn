@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://cge6bwwu6dg"]
+
+[ext_resource type="Script" path="res://Scripts/Products/Buildings/BuildingInfo.cs" id="1_nq2ah"]
+[ext_resource type="FontFile" uid="uid://dvywte7pmjnox" path="res://Sweetie Summer.ttf" id="2_1gvn1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28xy7"]
+bg_color = Color(0.658824, 0.623529, 0.945098, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.545098, 0.423529, 0.92549, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
+
+[node name="Control" type="Panel"]
+offset_right = 179.0
+offset_bottom = 359.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_28xy7")
+script = ExtResource("1_nq2ah")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.975
+anchor_bottom = 0.997
+offset_right = 6.04999
+offset_bottom = 0.0769958
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Name"
+horizontal_alignment = 1
+
+[node name="BuildingActions" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MoveButton" type="Button" parent="VBoxContainer/BuildingActions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Move"
+
+[node name="SellButton" type="Button" parent="VBoxContainer/BuildingActions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Sell"
+
+[node name="Close" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -26.0
+offset_top = -2.0
+offset_bottom = 29.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.483814, 0.336182, 0.876809, 1)
+theme_override_fonts/font = ExtResource("2_1gvn1")
+text = "X"
+flat = true
+clip_text = true
