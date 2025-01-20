@@ -176,21 +176,17 @@ public partial class UI : CanvasLayer
 		ActiveProduct = product;
 	}
 	
-	public void onTargetSelectionView(Building building)
+	public void OnTargetSelectionView(Building building)
 	{
+		_targetSelectionView.Building = building;
 		ShowView("TargetSelectionView");
 		
-	}
-
-	public void onTargetSelectionViewClose()
-	{
-		_targetSelectionView.Visible = false;
-		shop.Visible = false;
-		_buildingInfo.Visible = true;
+		
 	}
 
 	public void OnShowBuildingInfo(Building building, bool visible)
 	{
+		if(_targetSelectionView.Visible) return;
 		Console.WriteLine("OnShowBuildingInfo");
 		if(visible)
 		{
@@ -205,5 +201,10 @@ public partial class UI : CanvasLayer
 			}
 			
 		}
+	}
+
+	public void OnTargetUpdate(string targets)
+	{
+		_targetSelectionView.TargetLabel.Text = targets;
 	}
 }

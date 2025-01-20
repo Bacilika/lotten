@@ -98,8 +98,10 @@ public partial class Building: Product
 			DrawCircle(AreaOfInfluence.Position, AreaOfInfluence.Radius, AreaOfInfluence.Color);
 		}
 	}
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
+		
+		BuildingInstance?.CustomInput(@event);
 		if(focused)
 		{
 			if(@event.IsActionPressed(Inputs.LeftClick))
@@ -119,6 +121,12 @@ public partial class Building: Product
 				EmitSignal(SignalName.OnShowBuildingInfo, this, false);
 			}
 		}
+		
+		
+	}
+	public virtual void CustomInput(InputEvent @event)
+	{
+
 	}
 	
 	

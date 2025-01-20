@@ -25,8 +25,9 @@ public partial class GameScene : Node2D
 	private PackedScene _plotAreaScene = ResourceLoader.Load<PackedScene>("res://Scenes/plot_area.tscn");
 	private Control _wireView;
 	public List<PlotArea> ExpandedAreas = [];
-	public Vector2 DeadZone = new(5,5);
 	public TileMapValues TileMapValues = new ();
+	
+	public bool TargetSetMode;
 
 	public override void _Ready()
 	{
@@ -140,7 +141,8 @@ public partial class GameScene : Node2D
 	{
 		if(building.BuildingInstance is Launcher launcher)
 		{
-			launcher.OnTargetSelection += _userInterface.onTargetSelectionView;
+			launcher.OnTargetSelection += _userInterface.OnTargetSelectionView;
+			launcher.OnTargetUpdate += _userInterface.OnTargetUpdate;
 		}
 		PrepBuilding(building);
 		_userInterface.ActiveProduct = null;
@@ -156,10 +158,14 @@ public partial class GameScene : Node2D
 		_userInterface.ActiveProduct = null;
 	}
 
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
+		
+		if (TargetSetMode)return;
+
 		if(@event.IsActionPressed(Inputs.LeftClick))
 		{
+			Console.WriteLine("gamescene input left click");
 			Dragging = true;
 			FocusedDraggable?.OnDragged();
 		}
@@ -177,13 +183,12 @@ public partial class GameScene : Node2D
 		if (Dragging && FocusedDraggable != null)
 		{
 			var deltaFloat = (float)delta;
-			//FocusedDraggable.LerpedPosition = GetGlobalMousePosition();
 			if (FocusedDraggable is RigidBody2D rigidBody2D && GetGlobalMousePosition().DistanceTo(FocusedDraggable.GlobalPosition) > 5)
 			{
 				rigidBody2D.ApplyForce((GetGlobalMousePosition() - rigidBody2D.GlobalPosition) * 5000*deltaFloat);
 			}
 			
-			//FocusedDraggable.GlobalPosition = FocusedDraggable.GlobalPosition.Lerp(FocusedDraggable.LerpedPosition,  15* deltaFloat);
+			
 		}
 	}
 	
