@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ci2ihu8ydwgjy"]
+[gd_scene load_steps=18 format=3 uid="uid://ci2ihu8ydwgjy"]
 
 [ext_resource type="Script" path="res://Scripts/Camera2d.cs" id="1_ax46t"]
 [ext_resource type="Script" path="res://Scripts/GameScene.cs" id="1_wv7bn"]
@@ -8,10 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://bvs7bam6x34rl" path="res://Scenes/ui.tscn" id="4_rdwre"]
 [ext_resource type="PackedScene" uid="uid://b88tbsugpwm12" path="res://Scenes/Water.tscn" id="6_1gne7"]
 [ext_resource type="Texture2D" uid="uid://cb7f8od0vfv0w" path="res://Tilemaps/WaterPipe.png" id="8_4m3qn"]
+[ext_resource type="Theme" uid="uid://c2ru6v18te7oo" path="res://Themes/RedBorderTheme.tres" id="8_wijx2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h5lq6"]
 texture = ExtResource("2_11alr")
-texture_region_size = Vector2i(32, 32)
+margins = Vector2i(0, 4)
+separation = Vector2i(0, 8)
+texture_region_size = Vector2i(32, 24)
 1:0/0 = 0
 1:0/0/terrain_set = 0
 1:0/0/terrain = 0
@@ -608,7 +611,9 @@ sources/0 = SubResource("TileSetAtlasSource_h5lq6")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gid8v"]
 texture = ExtResource("2_tq715")
-texture_region_size = Vector2i(32, 32)
+margins = Vector2i(0, 4)
+separation = Vector2i(0, 8)
+texture_region_size = Vector2i(32, 24)
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -985,7 +990,9 @@ sources/1 = SubResource("TileSetAtlasSource_gid8v")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tfhp8"]
 texture = ExtResource("4_a52l8")
-texture_region_size = Vector2i(32, 32)
+margins = Vector2i(0, 4)
+separation = Vector2i(0, 8)
+texture_region_size = Vector2i(32, 24)
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -1448,6 +1455,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 80.0
 offset_bottom = 80.0
+theme = ExtResource("8_wijx2")
 
 [node name="ColorRect" type="ColorRect" parent="WireView"]
 custom_minimum_size = Vector2(80, 80)

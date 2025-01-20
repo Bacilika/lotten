@@ -19,6 +19,8 @@ public partial class UI : CanvasLayer
 	private RichTextLabel _moneyLabel;
 	private int _money;
 	private BuildingInfo _buildingInfo;
+	private TargetSelectionView _targetSelectionView;
+	
 	public int Money
 	{
 		get=>_money;
@@ -57,7 +59,11 @@ public partial class UI : CanvasLayer
 		Money = 1000;
 		GetNode<Button>("Button").Pressed += () => { _gameScene.ToggleMode();};
 		_buildingInfo = GetNode<BuildingInfo>("BuildingInfo");
-		(_buildingInfo.GetNode<Button>("Close")).Pressed += ShowShop;
+		_targetSelectionView = GetNode<TargetSelectionView>("TargetSelectionView");
+		
+		_buildingInfo.GetNode<Button>("Close").Pressed += () => ShowView("Shop");
+		_targetSelectionView.GetNode<Button>("VBoxContainer/ButtonContainer/CancelButton").Pressed += () => ShowView("BuildingInfo");
+		ShowView("Shop");
 
 	}
 
@@ -141,18 +147,44 @@ public partial class UI : CanvasLayer
 		}
 	}
 
+	public void ShowView(string view)
+	{
+		switch (view)
+		{
+			case "BuildingInfo":
+				_buildingInfo.Visible = true;
+				shop.Visible = false;
+				_targetSelectionView.Visible = false;
+				break;
+			case "Shop":
+				_buildingInfo.Visible = false;
+				shop.Visible = true;
+				_targetSelectionView.Visible = false;
+				break;
+			case "TargetSelectionView":
+				_buildingInfo.Visible = false;
+				shop.Visible = false;
+				_targetSelectionView.Visible = true;
+				break;
+		}
+	}
+
+
 
 	public void OnShopButtonPressed(Product product)
 	{
 		ActiveProduct = product;
 	}
-	private void ShowShop()
+	
+	public void onTargetSelectionView(Building building)
 	{
-		shop.Visible = true;
-		_buildingInfo.Visible = false;
+		ShowView("TargetSelectionView");
+		
 	}
-	private void HideShop()
+
+	public void onTargetSelectionViewClose()
 	{
+		_targetSelectionView.Visible = false;
 		shop.Visible = false;
 		_buildingInfo.Visible = true;
 	}
@@ -162,14 +194,14 @@ public partial class UI : CanvasLayer
 		Console.WriteLine("OnShowBuildingInfo");
 		if(visible)
 		{
-			HideShop();
+			ShowView("BuildingInfo");
 			_buildingInfo.ShowBuildingInfo(building);
 		}
 		else
 		{
 			if(building == _buildingInfo.Building) //close requested by open building
 			{
-				ShowShop();
+				ShowView("Shop");
 			}
 			
 		}

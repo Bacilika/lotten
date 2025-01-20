@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c2ru6v18te7oo"]
+
+[ext_resource type="StyleBox" uid="uid://oue4sk1y30mu" path="res://Themes/RedBorderPanel.tres" id="1_s4kyp"]
+
+[resource]
+Panel/styles/panel = ExtResource("1_s4kyp")

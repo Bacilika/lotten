@@ -8,6 +8,13 @@ public partial class Launcher:Building
     public Vector2 TargetLaunchPosition = new Vector2(0,0);
     public IDraggable LaunchedObject;
     private GameScene gameScene;
+    private bool targetsSet;
+    private Panel _gridMarker;
+
+    private bool _isSettingTargets;
+
+    [Signal]
+    public delegate void OnTargetSelectionEventHandler(Building building);
     public override void ReadyInstance()
     {
         gameScene = BuildingScene._gameScene;
@@ -27,7 +34,10 @@ public partial class Launcher:Building
         };
         launchTimer.WaitTime = 5;
         gameScene.AddChild(launchTimer);
-        launchTimer.Start();
+        if (targetsSet)
+        {
+            launchTimer.Start();
+        }
         var button = new Button
         {
             Text = "Set Targets",
@@ -36,11 +46,30 @@ public partial class Launcher:Building
         button.AddThemeFontSizeOverride("normal", 9);
         button.Pressed += SetLaunchTargets;
         BuildingScene.BuildingActions.Add(button);
+        _gridMarker = new Panel();
+        _gridMarker.Theme = ResourceLoader.Load<Theme>("res://Themes/RedBorderTheme.tres");
+        _gridMarker.Size = _gameScene.TileMapValues.TileSize;
+        
     }
 
     public void SetLaunchTargets()
     {
+        EmitSignal(SignalName.OnTargetSelection, this);
+        _isSettingTargets = true;
         Console.WriteLine("Setting launch targets");
+        _gridMarker.GlobalPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
+        _gameScene.AddChild(_gridMarker); //TODO: replace addchild with visibility and add child in ready
+    }
+
+    public override void Tick(double delta)
+    {
+        if (_isSettingTargets)
+        {
+            var deltaFloat = (float)delta;
+            var gridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
+            var targetGridPosition = _gameScene.GrassLayer.MapToLocal(gridPosition) - _gameScene.TileMapValues.TileSize / 2;
+            _gridMarker.GlobalPosition = _gridMarker.GlobalPosition.Lerp(targetGridPosition, 15 * deltaFloat);
+        }
     }
 
     public override void PhysicsTick(double delta)

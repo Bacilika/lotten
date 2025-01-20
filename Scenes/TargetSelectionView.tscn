@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca471dy5bo0sn"]
+
+[ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="1_tvugl"]
+[ext_resource type="FontFile" uid="uid://dvywte7pmjnox" path="res://Sweetie Summer.ttf" id="2_0u7m2"]
+[ext_resource type="Script" path="res://Scripts/TargetSelectionView.cs" id="2_st730"]
+
+[node name="TargetSelection" type="Panel"]
+offset_right = 167.0
+offset_bottom = 289.0
+theme = ExtResource("1_tvugl")
+script = ExtResource("2_st730")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 165.0
+offset_bottom = 286.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_0u7m2")
+theme_override_font_sizes/font_size = 19
+text = "Select Targets"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = " targets selected 0/5
+"
+fit_content = true
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ConfirmButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+layout_mode = 2
+text = "Confirm
+"

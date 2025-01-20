@@ -131,12 +131,17 @@ public partial class GameScene : Node2D
 		building.GlobalPosition = PlotLayer.MapToLocal(building.GridPosition);
 		BuildingsOnGrid[building.GridPosition] = building;
 		building.OnShowBuildingInfo += _userInterface.OnShowBuildingInfo;
+		
 		AddChild(building);
 	}
 	
 
 	private void OnPlaceBuilding(Building building)
 	{
+		if(building.BuildingInstance is Launcher launcher)
+		{
+			launcher.OnTargetSelection += _userInterface.onTargetSelectionView;
+		}
 		PrepBuilding(building);
 		_userInterface.ActiveProduct = null;
 	}
