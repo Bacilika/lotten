@@ -11,29 +11,29 @@ public partial class Launcher:Building
     public IDraggable LaunchedObject;
     private GameScene gameScene;
     private bool targetsSet;
-    private Panel _gridMarker;
+    private Panel _targetMarker;
     
     private List<Vector2I> _targets = [];
-    private List<Panel> _gridMarkers = [];
-    private Vector2 targetGridPosition;
+    private List<Panel> _targetMarkers = [];
+    private Vector2 _targetGridPosition;
     private bool _isSettingTargets;
+    private Timer _launchTimer;
+    
+    
+    private Vector2I? _previousTarget;
 
     public bool IsSettingTargets
     {
         get => _isSettingTargets;
         set
         {
-            if (value == true)
+            foreach (var marker in _targetMarkers)
             {
-                //Todo: display targets
-            }
-            else
-            {
-                //Todo: hide targets
+                marker.Visible = value;
             }
             _isSettingTargets = value;
             _gameScene.TargetSetMode = value;
-            _gridMarker.Visible = value;
+            _targetMarker.Visible = value;
         } 
     }
 
@@ -45,41 +45,63 @@ public partial class Launcher:Building
     public override void ReadyInstance()
     {
         gameScene = BuildingScene._gameScene;
-        Timer launchTimer = new Timer();
-        launchTimer.Timeout += () =>
-        {
-            Console.WriteLine("Launching water");
-            var water = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn").Instantiate<Water>();
-            water.GlobalPosition = BuildingScene.GlobalPosition;
-            gameScene.AddChild(water);
-            LaunchedObject = water;
-            water.InAir = true;
-            water.SetCollisionLayer(0);
-            TargetLaunchPosition = new Vector2(0,TargetLaunchPosition.Y - 24);
-            
-            
-        };
-        launchTimer.WaitTime = 5;
-        gameScene.AddChild(launchTimer);
-        if (targetsSet)
-        {
-            launchTimer.Start();
-        }
-        var button = new Button
-        {
-            Text = "Set Targets",
-            
-        };
-        button.AddThemeFontSizeOverride("normal", 9);
+        _launchTimer = new Timer();
+        _launchTimer.Timeout += OnLaunchTimerTimeout;
+        _launchTimer.WaitTime = 5;
+        gameScene.AddChild(_launchTimer);
+        
+        var button = new Button();
+        button.Text = "Set Targets";
         button.Pressed += SetLaunchTargets;
         BuildingScene.BuildingActions.Add(button);
-        _gridMarker = new Panel();
-        _gridMarker.Theme = ResourceLoader.Load<Theme>("res://Themes/RedBorderTheme.tres");
-        _gridMarker.Size = _gameScene.TileMapValues.TileSize;
-        _gridMarker.SetMouseFilter(Control.MouseFilterEnum.Ignore);
-        _gameScene.AddChild(_gridMarker);
+        
+        SetUpTargetMarker();
         IsSettingTargets = false;
         
+    }
+
+    private void OnLaunchTimerTimeout()
+    {
+        Console.WriteLine("Launching");
+        if (_targets.Count == 0)
+        {
+            _launchTimer.Stop();
+            return;
+        }
+        var stop = false;
+        foreach (var target in _targets)
+        {
+            if (stop || _previousTarget is null)
+            {
+                TargetLaunchPosition = _gameScene.GrassLayer.MapToLocal(target);
+                _previousTarget = target;
+                break;
+            }
+            if(target == _previousTarget) 
+                stop = true;
+                
+        }
+        if (_previousTarget == _targets.Last())
+        {
+            TargetLaunchPosition =  _gameScene.GrassLayer.MapToLocal(_targets.First());
+            _previousTarget = _targets.First();
+        }
+
+        var water = ResourceLoader.Load<PackedScene>("res://Scenes/Water.tscn").Instantiate<Water>();
+        water.GlobalPosition = BuildingScene.GlobalPosition;
+        gameScene.AddChild(water);
+        LaunchedObject = water;
+        water.InAir = true;
+        water.SetCollisionLayer(0);
+    }
+
+    private void SetUpTargetMarker()
+    {
+        _targetMarker = new Panel();
+        _targetMarker.Theme = ResourceLoader.Load<Theme>("res://Themes/RedBorderTheme.tres");
+        _targetMarker.Size = _gameScene.TileMapValues.TileSize;
+        _targetMarker.SetMouseFilter(Control.MouseFilterEnum.Ignore);
+        _gameScene.AddChild(_targetMarker);
     }
     
     private string TargetsToString()
@@ -97,7 +119,7 @@ public partial class Launcher:Building
         EmitSignal(SignalName.OnTargetSelection, this);
         IsSettingTargets = true;
         Console.WriteLine("Setting launch targets");
-        _gridMarker.GlobalPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
+        _targetMarker.GlobalPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
     }
 
     public override void Tick(double delta)
@@ -106,8 +128,8 @@ public partial class Launcher:Building
         {
             var deltaFloat = (float)delta;
             var gridPosition = _gameScene.GrassLayer.LocalToMap(_gameScene.GetGlobalMousePosition());
-            targetGridPosition = _gameScene.GrassLayer.MapToLocal(gridPosition) - _gameScene.TileMapValues.TileSize / 2;
-            _gridMarker.GlobalPosition = _gridMarker.GlobalPosition.Lerp(targetGridPosition, 15 * deltaFloat);
+            _targetGridPosition = _gameScene.GrassLayer.MapToLocal(gridPosition) - _gameScene.TileMapValues.TileSize / 2;
+            _targetMarker.GlobalPosition = _targetMarker.GlobalPosition.Lerp(_targetGridPosition, 15 * deltaFloat);
         }
     }
 
@@ -127,22 +149,22 @@ public partial class Launcher:Building
     public void AddTarget(Vector2I target)
     {
         if (_targets.Contains(target)) return;
-        if(_gridMarker.Duplicate() is not Panel newTarget) return;
+        if(_targetMarker.Duplicate() is not Panel newTarget) return;
         if(_targets.Count > 4) return;
-        newTarget.GlobalPosition = targetGridPosition;
+        newTarget.GlobalPosition = _targetGridPosition;
         _targets.Add(target);
-        _gridMarkers.Add(newTarget);
+        _targetMarkers.Add(newTarget);
         _gameScene.AddChild(newTarget);
     }
     public void RemoveTarget(Vector2I target)
     {
-        foreach (var marker in _gridMarkers)
+        foreach (var marker in _targetMarkers)
         {
             var markerGridPos = _gameScene.GrassLayer.LocalToMap(marker.GlobalPosition);
             if(markerGridPos == target)
             {
                
-                _gridMarkers.Remove(marker);
+                _targetMarkers.Remove(marker);
                 _gameScene.RemoveChild(marker);
                 marker.QueueFree();
                 _targets.Remove(target);
@@ -157,13 +179,13 @@ public partial class Launcher:Building
         if (@event.IsActionPressed(Inputs.LeftClick))
         {
             Console.WriteLine("Custom input left click");
-            var gridPosition = _gameScene.GrassLayer.LocalToMap(targetGridPosition);
+            var gridPosition = _gameScene.GrassLayer.LocalToMap(_targetGridPosition);
             AddTarget(gridPosition);
             
         }
         else if (@event.IsActionPressed(Inputs.RightClick))
         {
-            var gridPosition = _gameScene.GrassLayer.LocalToMap(targetGridPosition);
+            var gridPosition = _gameScene.GrassLayer.LocalToMap(_targetGridPosition);
             RemoveTarget(gridPosition);
         }
         EmitSignal(SignalName.OnTargetUpdate, TargetsToString());
@@ -177,6 +199,11 @@ public partial class Launcher:Building
 
     public void OnConfirmTargetSelection()
     {
-        Console.WriteLine("Confirming targets");
+        if(_targets.Count > 0)
+        {
+            targetsSet = true;
+            _launchTimer.Start();
+            Console.WriteLine("starting timer");
+        }
     }
 }

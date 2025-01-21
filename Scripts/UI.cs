@@ -63,6 +63,7 @@ public partial class UI : CanvasLayer
 		
 		_buildingInfo.GetNode<Button>("Close").Pressed += () => ShowView("Shop");
 		_targetSelectionView.GetNode<Button>("VBoxContainer/ButtonContainer/CancelButton").Pressed += () => ShowView("BuildingInfo");
+		_targetSelectionView.GetNode<Button>("VBoxContainer/ButtonContainer/ConfirmButton").Pressed += () => ShowView("BuildingInfo");
 		ShowView("Shop");
 
 	}

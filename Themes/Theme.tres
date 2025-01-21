@@ -1,9 +1,10 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://dwui7fk3de2lp"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dwui7fk3de2lp"]
 
 [ext_resource type="FontFile" uid="uid://dvywte7pmjnox" path="res://Sweetie Summer.ttf" id="1_7fbwn"]
 [ext_resource type="FontFile" uid="uid://per1g8t6xfad" path="res://Sweet Affogato.ttf" id="1_ygsgk"]
 [ext_resource type="StyleBox" uid="uid://bg781emyvb4k3" path="res://Themes/purplePlanel.tres" id="2_3w6fp"]
 [ext_resource type="StyleBox" uid="uid://dxwxom13r7nv7" path="res://Themes/TabBasic.tres" id="3_f0fng"]
+[ext_resource type="FontFile" uid="uid://dhbweyomt2e2c" path="res://Baby Sparkle.ttf" id="3_rchiu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnsyp"]
 bg_color = Color(0.659041, 0.622283, 0.946192, 0.666667)
@@ -60,6 +61,8 @@ Button/font_sizes/font_size = 16
 Button/fonts/font = ExtResource("1_7fbwn")
 Button/styles/disabled = ExtResource("2_3w6fp")
 Button/styles/normal = ExtResource("2_3w6fp")
+Label/font_sizes/font_size = 25
+Label/fonts/font = ExtResource("3_rchiu")
 Panel/styles/panel = ExtResource("2_3w6fp")
 RichTextLabel/colors/default_color = Color(0.356497, 0.204564, 0.695126, 0.666667)
 RichTextLabel/constants/line_separation = 0

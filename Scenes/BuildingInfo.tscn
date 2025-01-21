@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cge6bwwu6dg"]
+[gd_scene load_steps=5 format=3 uid="uid://cge6bwwu6dg"]
 
 [ext_resource type="Script" path="res://Scripts/Products/Buildings/BuildingInfo.cs" id="1_nq2ah"]
+[ext_resource type="Theme" uid="uid://dwui7fk3de2lp" path="res://Themes/Theme.tres" id="1_nxs8i"]
 [ext_resource type="FontFile" uid="uid://dvywte7pmjnox" path="res://Sweetie Summer.ttf" id="2_1gvn1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28xy7"]
@@ -19,6 +20,7 @@ anti_aliasing = false
 [node name="Control" type="Panel"]
 offset_right = 179.0
 offset_bottom = 359.0
+theme = ExtResource("1_nxs8i")
 theme_override_styles/panel = SubResource("StyleBoxFlat_28xy7")
 script = ExtResource("1_nq2ah")
 
@@ -41,12 +43,10 @@ alignment = 1
 
 [node name="MoveButton" type="Button" parent="VBoxContainer/BuildingActions"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 text = "Move"
 
 [node name="SellButton" type="Button" parent="VBoxContainer/BuildingActions"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 text = "Sell"
 
 [node name="Close" type="Button" parent="."]
