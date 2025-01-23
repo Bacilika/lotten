@@ -33,12 +33,14 @@ public partial class ExtrasTab : AbstractShopIconContainer
 						building.SubtypeGenerator = () => new Plot
 						{
 							GridPosition = building.GridPosition,
+							BuildingName = "Plot",
 						};
 						break;
 					case "RainCollector":
 						building.SubtypeGenerator = () => new RainCollector
 						{
 							GridPosition = building.GridPosition,
+							BuildingName = "Rain Collector",
 						};
 						building.AreaOfInfluence = new DrawableCircle(64,Vector2.Zero, new Color(120/255f, 123/255f, 125/255f, 0.3f));
 						break;
@@ -46,18 +48,28 @@ public partial class ExtrasTab : AbstractShopIconContainer
 						building.SubtypeGenerator = () => new WaterTank
 						{
 							GridPosition = building.GridPosition,
+							BuildingName = "Water Tank",
 						};
 						break;
 					case "SellStation":
 						building.SubtypeGenerator = () => new SellStation
 						{
 							GridPosition = building.GridPosition,
+							BuildingName = "Sell Station",
 						};
 						break;
 					case "Launcher":
 						building.SubtypeGenerator = () => new Launcher
 						{
 							GridPosition = building.GridPosition,
+							BuildingName = "Launcher",
+						};
+						break;
+					case "Storage":
+						building.SubtypeGenerator = () => new Storage
+						{
+							GridPosition = building.GridPosition,
+							BuildingName = "Storage",
 						};
 						break;
 

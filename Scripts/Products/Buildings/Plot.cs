@@ -9,12 +9,12 @@ public partial class Plot : Building
     
     private bool _hasWater;
     
-    public override void OnBodyEntered(Node2D body)
+    protected override void OnBodyEntered(Node2D body)
     {
         if (body is Water water && !IsWatered)
         {
             IsWatered = true;
-            _gameScene.RemoveChild(water);
+            GameScene.RemoveChild(water);
             WaterSoil();
             water.QueueFree();
             _plant?.StartGrowTimer();
@@ -24,25 +24,36 @@ public partial class Plot : Building
     
     private void WaterSoil()
     {
-        if (_gameScene.PlotTiles.Contains(GridPosition))
+        if (GameScene.PlotTiles.Contains(GridPosition))
         {
-            _gameScene.WaterTiles.Add(GridPosition);
-            _gameScene.WaterLayer.SetCellsTerrainConnect(_gameScene.WaterTiles, 0, 0);
+            GameScene.WaterTiles.Add(GridPosition);
+            GameScene.WaterLayer.SetCellsTerrainConnect(GameScene.WaterTiles, 0, 0);
         }
     }
 
-    public override void OnBodyExited(Node2D body)
+    protected override void SetCanReceive()
     {
+        CanReceive = [];
+    }
+
+    protected override void SetBuildingActions()
+    {
+        BuildingActions = [];
+    }
+
+    protected override void SetBuildingLabels()
+    {
+       BuildingScene.BuildingLabels = [];
     }
 
     public void Dry()
     {
-        foreach (var tile in _gameScene.WaterTiles)
+        foreach (var tile in GameScene.WaterTiles)
         {
-            _gameScene.WaterLayer.EraseCell(tile);
+            GameScene.WaterLayer.EraseCell(tile);
         }
-        _gameScene.WaterTiles.Remove(GridPosition);
-        _gameScene.WaterLayer.SetCellsTerrainConnect(_gameScene.WaterTiles, 0, 0);
+        GameScene.WaterTiles.Remove(GridPosition);
+        GameScene.WaterLayer.SetCellsTerrainConnect(GameScene.WaterTiles, 0, 0);
         IsWatered = false;
     }
 
@@ -63,7 +74,4 @@ public partial class Plot : Building
             
         }
     }
-   
-    
-    
 }

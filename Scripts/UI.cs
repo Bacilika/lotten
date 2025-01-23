@@ -53,19 +53,18 @@ public partial class UI : CanvasLayer
 	public override void _Ready()
 	{
 		shop = GetNode<Shop>("Shop");
-		shop.OnShopButtonPressed += OnShopButtonPressed;
 		_gameScene = GetParent<GameScene>();
 		_moneyLabel = GetNode<RichTextLabel>("MoneyLabel");
-		Money = 1000;
-		GetNode<Button>("Button").Pressed += () => { _gameScene.ToggleMode();};
 		_buildingInfo = GetNode<BuildingInfo>("BuildingInfo");
 		_targetSelectionView = GetNode<TargetSelectionView>("TargetSelectionView");
 		
 		_buildingInfo.GetNode<Button>("Close").Pressed += () => ShowView("Shop");
 		_targetSelectionView.GetNode<Button>("VBoxContainer/ButtonContainer/CancelButton").Pressed += () => ShowView("BuildingInfo");
 		_targetSelectionView.GetNode<Button>("VBoxContainer/ButtonContainer/ConfirmButton").Pressed += () => ShowView("BuildingInfo");
+		
+		shop.OnShopButtonPressed += OnShopButtonPressed;
 		ShowView("Shop");
-
+		Money = 1000;
 	}
 
 	public override void _Process(double delta)
@@ -79,7 +78,7 @@ public partial class UI : CanvasLayer
 		ActiveProduct.GlobalPosition = ActiveProduct.GlobalPosition.Lerp(ActiveProduct.LerpedPosition, 15 * deltaFloat);
 	}
 
-	public void OnPlaceProduct(Product product)
+	private void OnPlaceProduct(Product product)
 	{
 		if(_gameScene.GetPlotAreaAt(_gameScene.GetGlobalMousePosition()) == null) return;
 		switch (product)
@@ -108,16 +107,16 @@ public partial class UI : CanvasLayer
 				break; 
 		}
 	}
-	public bool CanAfford(Product product)
+	private bool CanAfford(Product product)
 	{
 		return Money >= product.Cost;
 	}
 
-	public bool CanPlaceBuilding(Building building)
+	private bool CanPlaceBuilding(Building building)
 	{
 		return CanAfford(building) && !_gameScene.BuildingsOnGrid.ContainsKey(building.GridPosition);
 	}
-	public bool CanPlacePlant(Plant plant)
+	private bool CanPlacePlant(Plant plant)
 	{
 		if (!CanAfford(plant)) return false;
 		if(_gameScene.BuildingsOnGrid.TryGetValue(plant.GridPosition, out var building))
@@ -148,7 +147,7 @@ public partial class UI : CanvasLayer
 		}
 	}
 
-	public void ShowView(string view)
+	private void ShowView(string view)
 	{
 		switch (view)
 		{
@@ -172,7 +171,7 @@ public partial class UI : CanvasLayer
 
 
 
-	public void OnShopButtonPressed(Product product)
+	private void OnShopButtonPressed(Product product)
 	{
 		ActiveProduct = product;
 	}
@@ -181,8 +180,6 @@ public partial class UI : CanvasLayer
 	{
 		_targetSelectionView.Building = building;
 		ShowView("TargetSelectionView");
-		
-		
 	}
 
 	public void OnShowBuildingInfo(Building building, bool visible)
@@ -200,7 +197,6 @@ public partial class UI : CanvasLayer
 			{
 				ShowView("Shop");
 			}
-			
 		}
 	}
 

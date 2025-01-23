@@ -9,7 +9,7 @@ public partial class Water : RigidBody2D, IDraggable
 	private Vector2 _shadowLerpedPosition;
 	private Sprite2D _shadow;
 	private PlotArea _lastPlotArea;
-	public bool InAir;
+	public bool InAir { get;set; }
 	public bool Sucked = false;
 
 	
@@ -82,6 +82,7 @@ public partial class Water : RigidBody2D, IDraggable
 	{
 		LinearDamp = 3;
 		SetCollisionLayer(1|2);
+		SetCollisionMask(1|2);
 		ApplyForce(Vector2.Down * 100);
 		_shadowLerpedPosition = Vector2.Zero;
 		InAir = false;

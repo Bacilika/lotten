@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ci2ihu8ydwgjy"]
+[gd_scene load_steps=14 format=3 uid="uid://ci2ihu8ydwgjy"]
 
 [ext_resource type="Script" path="res://Scripts/Camera2d.cs" id="1_ax46t"]
 [ext_resource type="Script" path="res://Scripts/GameScene.cs" id="1_wv7bn"]
@@ -7,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://c46b6cdswigsi" path="res://The Fan-tasy Tileset (Premium)/Art/Ground Tilesets/WaterLayer.png" id="4_a52l8"]
 [ext_resource type="PackedScene" uid="uid://bvs7bam6x34rl" path="res://Scenes/ui.tscn" id="4_rdwre"]
 [ext_resource type="PackedScene" uid="uid://b88tbsugpwm12" path="res://Scenes/Water.tscn" id="6_1gne7"]
-[ext_resource type="Texture2D" uid="uid://cb7f8od0vfv0w" path="res://Tilemaps/WaterPipe.png" id="8_4m3qn"]
-[ext_resource type="Theme" uid="uid://c2ru6v18te7oo" path="res://Themes/RedBorderTheme.tres" id="8_wijx2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h5lq6"]
 texture = ExtResource("2_11alr")
@@ -1336,95 +1334,6 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.704035, 4.81308e-08, 0.348007, 1)
 sources/0 = SubResource("TileSetAtlasSource_tfhp8")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xftq4"]
-texture = ExtResource("8_4m3qn")
-0:0/0 = 0
-0:0/0/terrain_set = 0
-0:0/0/terrain = 0
-0:0/0/terrains_peering_bit/bottom_side = 0
-1:0/0 = 0
-1:0/0/terrain_set = 0
-1:0/0/terrain = 0
-1:0/0/terrains_peering_bit/right_side = 0
-1:0/0/terrains_peering_bit/bottom_side = 0
-2:0/0 = 0
-2:0/0/terrain_set = 0
-2:0/0/terrain = 0
-2:0/0/terrains_peering_bit/right_side = 0
-2:0/0/terrains_peering_bit/bottom_side = 0
-2:0/0/terrains_peering_bit/left_side = 0
-3:0/0 = 0
-3:0/0/terrain_set = 0
-3:0/0/terrain = 0
-3:0/0/terrains_peering_bit/bottom_side = 0
-3:0/0/terrains_peering_bit/left_side = 0
-0:1/0 = 0
-0:1/0/terrain_set = 0
-0:1/0/terrain = 0
-0:1/0/terrains_peering_bit/bottom_side = 0
-0:1/0/terrains_peering_bit/top_side = 0
-1:1/0 = 0
-1:1/0/terrain_set = 0
-1:1/0/terrain = 0
-1:1/0/terrains_peering_bit/right_side = 0
-1:1/0/terrains_peering_bit/bottom_side = 0
-1:1/0/terrains_peering_bit/top_side = 0
-2:1/0 = 0
-2:1/0/terrain_set = 0
-2:1/0/terrain = 0
-2:1/0/terrains_peering_bit/right_side = 0
-2:1/0/terrains_peering_bit/bottom_side = 0
-2:1/0/terrains_peering_bit/left_side = 0
-2:1/0/terrains_peering_bit/top_side = 0
-3:1/0 = 0
-3:1/0/terrain_set = 0
-3:1/0/terrain = 0
-3:1/0/terrains_peering_bit/bottom_side = 0
-3:1/0/terrains_peering_bit/left_side = 0
-3:1/0/terrains_peering_bit/top_side = 0
-0:2/0 = 0
-0:2/0/terrain_set = 0
-0:2/0/terrain = 0
-0:2/0/terrains_peering_bit/top_side = 0
-1:2/0 = 0
-1:2/0/terrain_set = 0
-1:2/0/terrain = 0
-1:2/0/terrains_peering_bit/right_side = 0
-1:2/0/terrains_peering_bit/top_side = 0
-2:2/0 = 0
-2:2/0/terrain_set = 0
-2:2/0/terrain = 0
-2:2/0/terrains_peering_bit/right_side = 0
-2:2/0/terrains_peering_bit/left_side = 0
-2:2/0/terrains_peering_bit/top_side = 0
-3:2/0 = 0
-3:2/0/terrain_set = 0
-3:2/0/terrain = 0
-3:2/0/terrains_peering_bit/left_side = 0
-3:2/0/terrains_peering_bit/top_side = 0
-0:3/0 = 0
-0:3/0/terrain_set = 0
-0:3/0/terrain = 0
-1:3/0 = 0
-1:3/0/terrain_set = 0
-1:3/0/terrain = 0
-1:3/0/terrains_peering_bit/right_side = 0
-2:3/0 = 0
-2:3/0/terrain_set = 0
-2:3/0/terrain = 0
-2:3/0/terrains_peering_bit/right_side = 0
-2:3/0/terrains_peering_bit/left_side = 0
-3:3/0 = 0
-3:3/0/terrain_set = 0
-3:3/0/terrain = 0
-3:3/0/terrains_peering_bit/left_side = 0
-
-[sub_resource type="TileSet" id="TileSet_if6r0"]
-terrain_set_0/mode = 2
-terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0, 0.45571, 0.328561, 1)
-sources/0 = SubResource("TileSetAtlasSource_xftq4")
-
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_wv7bn")
 
@@ -1448,19 +1357,3 @@ position = Vector2(32, 50)
 position = Vector2(17, 21)
 
 [node name="UI" parent="." instance=ExtResource("4_rdwre")]
-
-[node name="WireView" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 80.0
-offset_bottom = 80.0
-theme = ExtResource("8_wijx2")
-
-[node name="ColorRect" type="ColorRect" parent="WireView"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-color = Color(0.313726, 0.333333, 0.329412, 0.866667)
-
-[node name="WaterPipes" type="TileMapLayer" parent="WireView"]
-tile_set = SubResource("TileSet_if6r0")

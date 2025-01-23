@@ -15,5 +15,6 @@ public interface IDraggable
     Vector2 GlobalPosition { get; set; }
     
     Vector2 PositionAtDragStart { get; set; }
+    bool InAir { get; set; }
     
 }

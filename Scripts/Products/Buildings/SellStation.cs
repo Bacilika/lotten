@@ -5,14 +5,28 @@ namespace Lotten.Scripts.Products.Buildings;
 
 public partial class SellStation: Building
 {
-    public override void OnBodyEntered(Node2D body)
+    protected override void SetCanReceive()
     {
-        Console.WriteLine("Body Enterd");
-        if (body is PhysicsPlant plant)
-        {
-            _gameScene.RemoveChild(plant);
-            plant.QueueFree();
-            _gameScene.UpdateMoney(plant.SellPrice);
-        }
+        CanReceive = [];
+        _storedIDraggables = null;
+    }
+
+    protected override void SetBuildingActions()
+    {
+        BuildingActions = [];
+    }
+
+    protected override void SetBuildingLabels()
+    {
+        BuildingLabels = [];
+    }
+
+    protected override void OnBodyEntered(Node2D body)
+    {
+        if (body is not PhysicsPlant plant) return;
+        
+        GameScene.RemoveChild(plant);
+        plant.QueueFree();
+        GameScene.UpdateMoney(plant.SellPrice);
     }
 }

@@ -9,8 +9,21 @@ public partial class RainCollector: Building
 {
     public Area2D CollectionArea;
     public CollisionShape2D CollectionShape;
-    public List<Water> Waterlist = new();
-    public override void ReadyInstance()
+    public List<Water> Waterlist = [];
+    protected override void SetCanReceive()
+    {
+        CanReceive = [];
+        _storedIDraggables = null;
+    }
+
+    protected override void SetBuildingActions()
+    {
+        BuildingActions = [];
+    }
+
+
+
+    protected override void ReadyInstance()
     {
         CollectionArea = new Area2D();
         BuildingScene.AddChild(CollectionArea);
@@ -26,45 +39,40 @@ public partial class RainCollector: Building
 
     private void OnRainExited(Node2D body)
     {
-        if (body is Water water)
-        {
-            if (Waterlist.Contains(water))
-            {
-                water.Sucked = false;
-                Waterlist.Remove(water);
-            }
-        }
-}
+        if (body is not Water water || !Waterlist.Contains(water)) return;
+        water.Sucked = false;
+        Waterlist.Remove(water);
+    }
 
-    public override void Tick(double delta)
+    protected override void Tick(double delta)
     {
-        List<Water> toRemove = new();
+        List<Water> toRemove = [];
         var deltaFloat = (float)delta;
         foreach (var water in Waterlist)
         {
             var vel = (BuildingScene.GlobalPosition - water.GlobalPosition) / 10;
-           water.ApplyForce(vel*700*deltaFloat);
+           water.ApplyForce(vel*1500*deltaFloat);
             if(water.GlobalPosition.DistanceTo(BuildingScene.GlobalPosition) < 12)
             {
                 toRemove.Add(water);
+                
             }
         }
         foreach (var water in toRemove)
         {
             Waterlist.Remove(water);
-            if(_gameScene.FocusedDraggable == water)
+            if(GameScene.FocusedDraggable == water)
             {
-                _gameScene.FocusedDraggable = null;
+                GameScene.FocusedDraggable = null;
             }
-            _gameScene.RemoveChild(water);
-            water.QueueFree();
+            water.Sucked = false;
+            BuildingScene._storedIDraggables.Add(water);
+            GameScene.RemoveChild(water);
         }
         toRemove.Clear();
        BuildingScene.QueueRedraw();
-        
-       
-        
     }
+    
 
     private void OnRainEntered(Node2D body)
     {

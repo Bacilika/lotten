@@ -21,6 +21,7 @@ public partial class Plant : Product, IDraggable
 	
 	public Vector2 LerpedPosition { get; set; }
 	public Vector2 PositionAtDragStart { get; set; }
+	public bool InAir { get; set; }
 
 	public override void _Ready()
 	{
@@ -127,6 +128,7 @@ public partial class Plant : Product, IDraggable
 		physicsPlant.GlobalPosition = GlobalPosition;
 		_gameScene.AddChild(physicsPlant);
 		physicsPlant.PlantSprite.Texture = Sprites.Last();
+		physicsPlant.PlantName = ProductName;
 		physicsPlant.SellPrice = SellPrice;
 		Plot.Plant = null;
 		_gameScene.FocusedDraggable = physicsPlant;

@@ -1,29 +1,41 @@
-﻿using Godot;
+﻿using System.Linq;
+using Godot;
 
 namespace Lotten.Scripts.Products.Buildings;
 
 public partial class WaterTank: Building
 {
-    public int StoredWater = 0;
-    public int Capacity = 20;
-   
-    public override void OnBodyEntered(Node2D body)
+
+    protected override void SetCanReceive()
     {
-        if (body is Water water && StoredWater < Capacity)
+        CanReceive.Add(nameof(Water));
+        _storedIDraggables = null;
+    }
+
+    protected override void SetBuildingActions()
+    {
+        BuildingActions = [];
+    }
+
+    protected override void OnBodyEntered(Node2D body)
+    {
+        if (body is Water water && BuildingScene._storedIDraggables.Count < _capacity)
         {
-            _gameScene.RemoveChild(water);
-            water.QueueFree();
-            StoredWater++;
+            GameScene.RemoveChild(water);
+            BuildingScene._storedIDraggables.Add(water);
 
         }
     }
-    public override void OnClick()
+    protected override void OnClick()
     {
-        if(StoredWater < 1 || _gameScene.FocusedDraggable != null) return; 
-        var water = _gameScene.SpawnWater(BuildingScene.GlobalPosition);
-        _gameScene.FocusedDraggable = water;
-        _gameScene.Dragging = true;
+        if(BuildingScene._storedIDraggables.Count < 1 || GameScene.FocusedDraggable != null) return;
+        
+        var water = (Water) BuildingScene.RemoveDraggable();
+        GameScene.AddChild(water);
+        GameScene.FocusedDraggable = water;
+        GameScene.Dragging = true;
         water.OnDragged();
-        StoredWater--;
+        
     }
+    
 }

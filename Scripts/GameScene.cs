@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Godot.Collections;
 using Lotten.Scripts.Products;
 using Lotten.Scripts.Products.Buildings;
-using Array = Godot.Collections.Array;
 
 namespace Lotten.Scripts;
 public partial class GameScene : Node2D
@@ -29,12 +28,10 @@ public partial class GameScene : Node2D
 	
 	public bool TargetSetMode;
 
+	[Signal]
+	public delegate void OnBuildingPlacedEventHandler();
 	public override void _Ready()
 	{
-		var window = GetTree().Root;
-		window.Mode = Window.ModeEnum.Windowed;
-		window.Size = new Vector2I(1280, 720);
-		window.MoveToCenter();
 		_userInterface = GetNode<UI>("UI");
 		_userInterface.OnPlaceBuilding += OnPlaceBuilding;
 		_userInterface.OnPlacePlot += OnPlacePlot;
@@ -44,11 +41,9 @@ public partial class GameScene : Node2D
 		WaterLayer = GetNode<TileMapLayer>("WaterLayer");
 		SetUpExpansionZone(Vector2.Zero);
 		SetUpTimers();
-		_wireView = GetNode<Control>("WireView");
-		
 	}
 
-	public void SetUpTimers()
+	private void SetUpTimers()
 	{
 		WaterTimer = new Timer
 		{
@@ -86,11 +81,10 @@ public partial class GameScene : Node2D
 	}
 	public void SetUpExpansionZone(Vector2 position)
 	{
-		var newPlot = _plotAreaScene.Instantiate<PlotArea>();
-		newPlot.GlobalPosition = position;
-		AddChild(newPlot);
-		ExpandLand(newPlot);
-		
+		var newLand = _plotAreaScene.Instantiate<PlotArea>();
+		newLand.GlobalPosition = position;
+		AddChild(newLand);
+		ExpandLand(newLand);
 	}
 	
 	public void ExpandLand(PlotArea area)
@@ -116,6 +110,7 @@ public partial class GameScene : Node2D
 	private void OnPlacePlot(Building plot)
 	{
 		PrepBuilding(plot);
+		AddChild(plot);
 		plot.GetNode<Sprite2D>("Sprite2D").Visible = false;
 		if (!PlotTiles.Contains(plot.GridPosition))
 		{
@@ -127,25 +122,31 @@ public partial class GameScene : Node2D
 
 	private void PrepBuilding(Building building)
 	{
-		building._gameScene = this;
-		building.BuildingInstance._gameScene = this;
+		building.GameScene = this;
+		building.BuildingInstance.GameScene = this;
 		building.GlobalPosition = PlotLayer.MapToLocal(building.GridPosition);
-		BuildingsOnGrid[building.GridPosition] = building;
+		BuildingsOnGrid[building.GridPosition] = building.BuildingInstance;
 		building.OnShowBuildingInfo += _userInterface.OnShowBuildingInfo;
-		
-		AddChild(building);
 	}
 	
 
 	private void OnPlaceBuilding(Building building)
 	{
+
+		OnBuildingPlaced += building.UpdateAdjacentBuildings;
 		if(building.BuildingInstance is Launcher launcher)
 		{
 			launcher.OnTargetSelection += _userInterface.OnTargetSelectionView;
 			launcher.OnTargetUpdate += _userInterface.OnTargetUpdate;
 		}
 		PrepBuilding(building);
+		AddChild(building);
 		_userInterface.ActiveProduct = null;
+		EmitSignal(SignalName.OnBuildingPlaced);
+		if (building.BuildingInstance is Launcher)
+		{
+			Console.WriteLine("Water tank placed");
+		}
 	}
 	
 	private void OnPlacePlant(Plant plant)
@@ -160,7 +161,6 @@ public partial class GameScene : Node2D
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		
 		if (TargetSetMode)return;
 
 		if(@event.IsActionPressed(Inputs.LeftClick))
@@ -180,18 +180,14 @@ public partial class GameScene : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Dragging && FocusedDraggable != null)
+		if (!Dragging || FocusedDraggable == null) return;
+		
+		var deltaFloat = (float)delta;
+		if (FocusedDraggable is RigidBody2D rigidBody2D && GetGlobalMousePosition().DistanceTo(FocusedDraggable.GlobalPosition) > 5)
 		{
-			var deltaFloat = (float)delta;
-			if (FocusedDraggable is RigidBody2D rigidBody2D && GetGlobalMousePosition().DistanceTo(FocusedDraggable.GlobalPosition) > 5)
-			{
-				rigidBody2D.ApplyForce((GetGlobalMousePosition() - rigidBody2D.GlobalPosition) * 5000*deltaFloat);
-			}
-			
-			
+			rigidBody2D.ApplyForce((GetGlobalMousePosition() - rigidBody2D.GlobalPosition) * 5000*deltaFloat);
 		}
 	}
-	
 
 	public void ToggleMode()
 	{
