@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dn46dy8nmjovo"]
+[gd_scene load_steps=4 format=3 uid="uid://dn46dy8nmjovo"]
 
 [ext_resource type="Script" path="res://Scripts/Products/Buildings/Building.cs" id="1_m16t2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ldfbd"]
 radius = 9.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a23ub"]
+size = Vector2(11, 9)
 
 [node name="Building" type="Area2D"]
 collision_layer = 2
@@ -15,3 +18,10 @@ modulate = Color(0, 1, 1, 1)
 shape = SubResource("CircleShape2D_ldfbd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_a23ub")
